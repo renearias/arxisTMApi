@@ -6,11 +6,11 @@ imports:
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    locale: en
+    locale: es
 
 framework:
     #esi:             ~
-    #translator:      { fallbacks: ["%locale%"] }
+    translator:      { fallbacks: ["%locale%"] }
     secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -68,7 +68,14 @@ swiftmailer:
     spool:     { type: memory }
 
 hwi_oauth:
-    firewall_names:        [secured_area]
+    connect: 
+        account_connector: my.fos.user_provider
+        #registration_form: fos_user.registration.form.factory
+    firewall_names:        [main]
+    fosub:
+        username_iterations: 30
+        properties:
+            facebook:    facebookId
     resource_owners:
         facebook:
             type:          facebook
@@ -77,3 +84,7 @@ hwi_oauth:
             scope:         "email"
             options:
                 display: popup #dialog is optimized for popup window
+fos_user:
+    db_driver: orm
+    firewall_name: main
+    user_class: AppBundle\Entity\Usuario
