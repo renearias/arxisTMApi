@@ -84,6 +84,9 @@ hwi_oauth:
             scope:         "email"
             infos_url:     "https://graph.facebook.com/me?fields=id,name,email,picture.type(square)"
             paths:
+                username:       id
+                nickname:       email
+                name:           name
                 email:          email
                 profilepicture: picture.data.url
             options:
