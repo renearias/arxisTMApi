@@ -22,7 +22,7 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         login:
-            pattern:  ^/(login$|register)
+            pattern:  ^/(login$|connect$|register)
             anonymous: true    
         #main:
         #    anonymous: ~
@@ -32,26 +32,32 @@ security:
             anonymous: ~
             oauth:
                 resource_owners:
-                    facebook:           "/login/check-facebook"
+                    facebook:           "/connect/check-facebook"
                     #google:             "/login/check-google"
                     #my_custom_provider: "/login/check-custom"
                     #my_github:          "/login/check-github"
-                login_path:        /login
+                login_path:        /connect
                 use_forward:       false
-                failure_path:      /login
+                failure_path:      /connect
                 
                 oauth_user_provider:
-                    service: hwi_oauth.user.provider.fosub_bridge
-                #oauth_user_provider:
-                #    service: my.oauth_aware.user_provider.service    
+                    #service: hwi_oauth.user.provider.fosub_bridge
+                    service: my.fos.user_provider
 
             # http_basic: ~
             # http://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate
 
-            # form_login: ~
-            # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+            form_login:
+                provider: fos_userbundle
+                #login_path: /connect/
+                #check_path: /login/login_check
+                #csrf_token_generator: security.csrf.token_manager
+            logout:
+                path:   fos_user_security_logout
+                target: fos_user_security_login    
     access_control:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/connect$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        #- { path: ^/admin/, role: ROLE_ADMIN }
+        - { path: ^/$, role: IS_AUTHENTICATED_FULLY }

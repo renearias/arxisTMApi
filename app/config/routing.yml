@@ -11,6 +11,8 @@ hwi_oauth_connect:
 
 hwi_oauth_login:
     resource: "@HWIOAuthBundle/Resources/config/routing/login.xml"
-    prefix:   /login
-facebook_login:
-    path: /login/check-facebook
+    prefix:   /connect
+#facebook_login:
+#    path: /login/check-facebook
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
