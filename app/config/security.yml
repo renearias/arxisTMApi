@@ -14,7 +14,7 @@ security:
         #in_memory:
         #    memory: ~
         fos_userbundle:
-            id: fos_user.user_provider.username
+            id: fos_user.user_provider.username_email
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
@@ -24,9 +24,26 @@ security:
         login:
             pattern:  ^/(login$|connect$|register)
             anonymous: true    
-        #main:
-        #    anonymous: ~
-            # activate different ways to authenticate
+            
+        oauth_token:
+            pattern:    ^/oauth/v2/token
+            security:   false
+
+        oauth_authorize:
+            pattern:    ^/oauth/v2/auth
+            form_login:
+                provider: fos_userbundle
+                check_path: /oauth/v2/auth_login_check
+                login_path: /oauth/v2/auth_login
+            anonymous: true
+            # Add your favorite authentication process here
+
+        api:
+            pattern:    ^/api
+            fos_oauth:  true
+            stateless:  true
+            anonymous:  false # can be omitted as its default value
+
         main:
             pattern:    ^/
             anonymous: ~
@@ -44,6 +61,8 @@ security:
                     #service: hwi_oauth.user.provider.fosub_bridge
                     service: my.fos.user_provider
 
+    
+        
             # http_basic: ~
             # http://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate
 
@@ -56,8 +75,10 @@ security:
                 path:   fos_user_security_logout
                 target: fos_user_security_login    
     access_control:
+        - { path: ^/$, role: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api, roles: [ IS_AUTHENTICATED_FULLY ] }
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/connect$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/oauth/v2/, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/$, role: IS_AUTHENTICATED_FULLY }

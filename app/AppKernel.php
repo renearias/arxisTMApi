@@ -16,8 +16,12 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new AppBundle\AppBundle(),
+            new FOS\OAuthServerBundle\FOSOAuthServerBundle(),
             new FOS\UserBundle\FOSUserBundle(),
+            new FOS\RestBundle\FOSRestBundle(),
             new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
+            new JMS\SerializerBundle\JMSSerializerBundle(),
+            new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

@@ -91,7 +91,37 @@ hwi_oauth:
                 profilepicture: picture.data.url
             options:
                 display: popup #dialog is optimized for popup window
+
+fos_oauth_server:
+    db_driver: orm       
+    client_class:        AppBundle\Entity\Client
+    access_token_class:  AppBundle\Entity\AccessToken
+    refresh_token_class: AppBundle\Entity\RefreshToken
+    auth_code_class:     AppBundle\Entity\AuthCode  
+    service:
+        user_provider: fos_user.user_provider.username_email
+
+fos_rest:
+    routing_loader:
+        default_format: json                            # All responses should be JSON formated
+        include_format: false                           # We do not include format in request, so that all responses
+                                                        # will eventually be JSON formated        
+    #param_fetcher_listener: true
+    #body_listener: true
+          
+    #view:
+    #    view_response_listener:
+    #        enabled:              true
+    #        force:                false
+    #    serialize_null:       false
+    #serializer:
+    #    serialize_null:       false   
+        
 fos_user:
     db_driver: orm
     firewall_name: main
     user_class: AppBundle\Entity\Usuario
+    
+
+nelmio_api_doc: ~
+        
