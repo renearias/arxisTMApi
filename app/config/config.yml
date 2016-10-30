@@ -124,4 +124,13 @@ fos_user:
     
 
 nelmio_api_doc: ~
+
+nelmio_cors:
+    defaults:
+        allow_origin:  ["*"]
+        allow_methods: ["POST", "PUT", "GET", "DELETE", "OPTIONS"]
+        allow_headers: ["content-type", "authorization"]
+        max_age:       3600
+    paths:
+        '^/': ~    
         
