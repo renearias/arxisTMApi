@@ -59,14 +59,12 @@ class FacebookGrantExtension implements GrantExtensionInterface{
             return false;
         }
         
-        $user = $this->userProvider->loadUserByFacebookId($fbData['id']);
+        $user = $this->userProvider->loadUserByFacebookId($fbData['id'],$inputData['facebook_access_token']);
         
         if (null === $user) {
             throw new OAuth2ServerException(OAuth2::HTTP_BAD_REQUEST, OAuth2::ERROR_INVALID_GRANT, 'User not found.');
             return false;
         }
-        
-        
         
         return array(
             'data' => $user,
