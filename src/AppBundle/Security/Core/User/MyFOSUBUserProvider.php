@@ -85,4 +85,21 @@ class MyFOSUBUserProvider extends BaseUserProvider
 
         return $user;
     }
+    
+    
+     /**
+     * {@inheritDoc}
+     */
+    public function loadUserByFacebookId($facebookId, $facebookAccessToken = null)
+    {
+        $user = $this->userManager->findUserBy([
+            'facebookId'=>$facebookId
+        ]);
+        if (!$user){
+            return null;
+        }
+        $user->setFacebookAccessToken($facebookAccessToken);
+        $this->userManager->updateUser($user);
+        return $user;
+    }
 }
