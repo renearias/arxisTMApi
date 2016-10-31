@@ -1,7 +1,3 @@
-PayPayAnnotations:
-   resource: "@PayPayBundle/Controller/"
-   type:     annotation
-   prefix:   /
 pay_pay_ingresos:
     resource: "@PayPayBundle/Resources/config/routing/ingresos.yml"
 pay_pay_facturas:

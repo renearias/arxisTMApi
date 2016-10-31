@@ -4,41 +4,48 @@ namespace Multiservices\TaskBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TareaType extends AbstractType
 {
     /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-         $builder
-            //->add('tasktemplate',null,array('label'=>'Plantilla'))
-            ->add('tarea')
-            ->add('descripcion')
-            ->add('assignedto',null,array('label'=>'Asignada a'))
-            ->add('isurgent',null,array('label'=>'Urgente'))
-        ;
+        $builder->add('tarea')
+                ->add('descripcion')
+                //->add('created')
+                //->add('finished')
+                ->add('isurgent')
+                ->add('isread')
+                ->add('timeEstimate')
+                ->add('priority')
+                //->add('state')
+                //->add('parent')
+                //->add('createdby')
+                ->add('assignedto')
+                //->add('finishby')
+                /*->add('tasktemplate')*/        ;
     }
     
     /**
-     * @param OptionsResolverInterface $resolver
+     * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Multiservices\TaskBundle\Entity\Tarea',
-            'attr' => array('ng-submit'=>"processForm(\$event,'".$this->getName()."')")
+            'data_class' => 'Multiservices\TaskBundle\Entity\Tarea'
         ));
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'multiservices_taskbundle_tarea';
     }
+
+
 }
