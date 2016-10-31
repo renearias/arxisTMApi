@@ -1,0 +1,80 @@
+{% block body -%}
+<div class="modal-header noprint">
+	<button type="button" class="close" ng-click="closeModal()" data-dismiss="modal" aria-hidden="true">
+		&times;
+	</button>
+        <h4 class="modal-title" id="myModalLabel">
+        <img src="{{asset('logo.png')}}" height="100" alt="Logotipo" />
+         Impresión - Vista Previa
+        </h4>
+        <div class="text-align-right" style="text-align: right!important;">
+        <a id="imprimirmodal" class="btn btn-success" onclick="window.print();">Imprimir</a>
+        </div>
+</div>
+
+<div id="remoteModalContent" class="modal-body ">
+        
+   <div>        
+        <center><img src="{{asset('logo.png')}}" height="80" border="0" alt="Logo"> </center>
+             <h1 style="text-align:center">
+                Factura Nº  {{ entity.id }}         
+             </h1>
+          <br/>
+          Cliente: {{ entity.idcliente}} <br/>
+          Emitido: {{ entity.emitido|date('Y-m-d H:i:s') }}  
+    </div>   
+      
+ 
+                        
+                 
+          <br/><br/><br/>    
+        <table class="table table-striped table-primary registrados" collection-form>
+        <thead>
+             <tr><th colspan="4">Detalle de Factura</th></tr>
+             <tr>
+                 <th>Producto</th>
+                 <th>Cantidad</th>
+                 <th>Precio Unitario</th>
+                 <th>Precio Total</th>
+             </tr>
+       </thead>     
+       <tbody> 
+            {% for item in entity.items %}
+                <tr>
+                    <td>{{item.idproducto}}</td>
+                    <td>{{item.cantidad}} </td>
+                    <td>{{item.punitario}}</td>
+                    <td> {{(item.cantidad*item.punitario)|round(2)}}</td>
+                </tr>
+             {%endfor%}
+       </tbody>
+    </table>
+     <div class="row">
+        <div class="col-xs-10 text-right">Sub Total</div>
+        <div class="col-xs-2 text-right">{{entity.subtotal}}</div>
+      </div>
+      <div class="row">
+        <div class="col-xs-10 text-right">Iva (12%):</div>
+        <div class="col-xs-2 text-right">{{entity.ivaigv}}</div>
+      </div>
+      <div class="row">
+        <div class="col-xs-10 text-right"><b>Gran Total:</b></div>
+        <div class="col-xs-2 text-right"><b>{{entity.total}}</b></div>
+      </div>
+      <br/>
+    
+      <table>
+            <tr>              
+                
+                <td>Vencimiento: {{ entity.vencimiento|date('Y-m-d H:i:s') }}</td>
+               
+            </tr>
+        </table>  
+</div>                          
+    <div class="modal-footer noprint">
+	<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="closeModal()">
+		Cancelar
+	</button>
+    <a id="imprimirmodal" type="button" class="btn btn-success" onclick="window.print()">Imprimir</a>
+</div>
+{% endblock %}

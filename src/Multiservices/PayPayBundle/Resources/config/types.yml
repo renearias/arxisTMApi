@@ -1,0 +1,7 @@
+doctrine:
+    dbal:
+       types:
+           #ClientesType: Multiservices\PayPayBundle\Form\Type\ClientesType
+           #FormasPagosType: Multiservices\PayPayBundle\Form\Type\FormasPagosType
+           #UsuariosType: Multiservices\PayPayBundle\Form\Type\UsuariosType             
+           EstadoFacturaType: Multiservices\PayPayBundle\DBAL\Types\EstadoFacturaType

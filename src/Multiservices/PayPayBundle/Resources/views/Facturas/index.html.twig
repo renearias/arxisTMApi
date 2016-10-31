@@ -1,0 +1,90 @@
+{% block content -%}
+<div id="content">
+    <div class="row">
+        <big-breadcrumbs items="['Facturas', 'Resumen']" icon="file"
+                         class="col-xs-12 col-sm-7 col-md-7 col-lg-4"></big-breadcrumbs>
+                          
+        <div smart-include="{{path('layout-sub-header')}}"></div>
+    </div>
+    <div class="row">
+
+    <table class="table records_list">
+        <thead>
+             <tr>
+                 <th style="text-align:right;" colspan="15" scope="col">
+                    {%verbatim%}
+                    <div ng-controller="PrintCtrl">
+                        <a data-ng-click="openModal('factura_imprimir')" type="button" class="btn btn-app btn-success "><i class="fa fa-print bigger-160"></i> Imprimir</a>
+                    </div>
+                    {%endverbatim%}   
+                 </th>
+             </tr>
+            <tr>
+                <th>Nº</th>
+                {#<th>Legal</th>#}
+                <th>Emitido</th>
+                <th>Cliente</th>
+                
+               
+                {#<th>Estado</th>#}
+                <th>Sub total</th>
+                <th>Iva</th>
+                <th>Total</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('facturas_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                {#<td>{{ entity.legal }}</td>#}
+                <td>{% if entity.emitido %}{{ entity.emitido|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ entity.idcliente}}</td>
+                
+                
+                {#<td>{{ entity.estado }}</td>#}
+                
+                <td>{{ entity.subtotal }}</td>
+                <td>{{ entity.ivaigv }}</td>
+                <td>{{ entity.total }}</td>
+                <td>
+                <ul>                    
+                    
+                    
+                    
+                    
+                                                                                                            
+                                             
+                    <li>
+                        <a href="{{ path('facturas_show', { 'id': entity.id }) }}">mostrar</a>
+                    </li>                    
+                    
+                    
+                    
+                    
+                                                                                                            
+                                             
+                    <li>
+                        <a href="{{ path('facturas_edit', { 'id': entity.id }) }}">editar</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    <div class="row">    
+        <ul>
+        <li>
+            <a href="{{ path('facturas_new') }}">
+                Crear nueva entrada
+            </a>
+        </li>
+    </ul>
+        </div>
+</div>    
+ <!--area imprimible test -->
+    <div class="printable"></div>
+    <!-- fin area imprimible test -->           
+{% endblock %}

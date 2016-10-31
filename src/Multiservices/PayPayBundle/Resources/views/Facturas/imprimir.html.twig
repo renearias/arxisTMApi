@@ -1,0 +1,76 @@
+{% block body -%}
+<div class="modal-header noprint">
+	<button type="button" class="close" ng-click="closeModal()" data-dismiss="modal" aria-hidden="true">
+		&times;
+	</button>
+        <h4 class="modal-title" id="myModalLabel">
+        <img src="{{asset('logo.png')}}" height="100" alt="Logotipo" />
+         Impresión - Vista Previa
+        </h4>
+        <div class="text-align-right" style="text-align: right!important;">
+        <a id="imprimirmodal" class="btn btn-success" onclick="window.print();">Imprimir</a>
+        </div>
+</div>
+
+<div id="remoteModalContent" class="modal-body ">
+    
+        <div>
+        <br/><br/>            
+        <center><img src="{{asset('logo.png')}}" height="80" border="0" alt="Logo"> </center>
+             <h1 style="text-align:center">
+                 Listado de Facturas          
+             </h1>
+          <br/><br/><br/>
+    </div>
+    
+       <table  border="1" width="100%" cellpadding="1" cellspacing="0" bgcolor="FFFFFF" style="border-collapse: collapse;">
+        <thead style="background-color:#04d868">
+            <tr>
+                <th style="padding: 5px;text-align:center;">Id</th>
+                <th style="padding: 5px;text-align:center;">Legal</th>
+                <th style="padding: 5px;text-align:center;">Emitido</th>
+                <th style="padding: 5px;text-align:center;">Vencimiento</th>
+                <th style="padding: 5px;text-align:center;">Pago</th>
+                
+                <th style="padding: 5px;text-align:center;">Forma</th>
+                <th style="padding: 5px;text-align:center;">Estado</th>
+                <th style="padding: 5px;text-align:center;">Tipo</th>
+                <th style="padding: 5px;text-align:center;">Cobrado</th>
+                <th style="padding: 5px;text-align:center;">Statevencido</th>
+                <th style="padding: 5px;text-align:center;">Credito</th>
+                <th style="padding: 5px;text-align:center;">IVA</th>
+                <th style="padding: 5px;text-align:center;">Sub total</th>
+                <th style="padding: 5px;text-align:center;">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td style="padding: 5px">{{ entity.id }}</td>
+                <td style="padding: 5px">{{ entity.legal }}</td>
+                <td style="padding: 5px">{% if entity.emitido %}{{ entity.emitido|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td style="padding: 5px">{% if entity.vencimiento %}{{ entity.vencimiento|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td style="padding: 5px">{% if entity.pago %}{{ entity.pago|date('Y-m-d H:i:s') }}{% endif %}</td>
+                
+                <td style="padding: 5px">{{ entity.forma }}</td>
+                <td style="padding: 5px">{{ entity.estado }}</td>
+                <td style="padding: 5px">{{ entity.tipo }}</td>
+                <td style="padding: 5px">{{ entity.cobrado }}</td>
+                <td style="padding: 5px">{{ entity.statevencido }}</td>
+                <td style="padding: 5px">{% if entity.credito %}{{ entity.credito|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td style="padding: 5px">{{ entity.ivaigv }}</td>
+                <td style="padding: 5px">{{ entity.subtotal }}</td>
+                <td style="padding: 5px">{{ entity.total }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+        <br/><br/><br/><br/><br/>
+</div>                          
+    <div class="modal-footer noprint">
+	<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="closeModal()">
+		Cancelar
+	</button>
+    <a id="imprimirmodal" type="button" class="btn btn-success" onclick="window.print()">Imprimir</a>
+</div>
+{% endblock %}

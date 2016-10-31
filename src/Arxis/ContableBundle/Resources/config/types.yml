@@ -1,0 +1,9 @@
+doctrine:
+    dbal:
+      types:
+         ClaseContribuyenteType: Arxis\ContableBundle\DBAL\Types\ClaseContribuyenteType
+         CuentaContableType: Arxis\ContableBundle\DBAL\Types\CuentaContableType
+         EstadoEstablecimientoType: Arxis\ContableBundle\DBAL\Types\EstadoEstablecimientoType
+         NaturalezaCuentaContableType: Arxis\ContableBundle\DBAL\Types\NaturalezaCuentaContableType
+         GeneroCuentaContableType: Arxis\ContableBundle\DBAL\Types\GeneroCuentaContableType
+         

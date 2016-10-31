@@ -1,0 +1,21 @@
+services:
+#    arxis_contable.example:
+#        class: Arxis\ContableBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]
+    arxiscontablebundle.form.handler.contacto:
+        class: AppBundle\Form\Handler\FormHandler
+        arguments: ["@doctrine.orm.entity_manager","@form.factory","@arxiscontablebundle.form.contactotype"]
+    arxiscontablebundle.form.contactotype:
+        class: Arxis\ContableBundle\Form\ContactoType
+    arxiscontablebundle.form.handler.cliente:
+        class: AppBundle\Form\Handler\FormHandler
+        arguments: ["@doctrine.orm.entity_manager","@form.factory","@arxiscontablebundle.form.clientetype"]
+    arxiscontablebundle.form.clientetype:   
+        class: Arxis\ContableBundle\Form\ClienteType  
+    arxiscontablebundle_datatable.contactos:
+        class: Arxis\ContableBundle\Datatables\ContactoDatatable
+        parent: sg_datatables.datatable.abstract       
+    arxiscontablebundle_datatable.clientes:
+        class: Arxis\ContableBundle\Datatables\ClienteDatatable
+        parent: sg_datatables.datatable.abstract           
+        

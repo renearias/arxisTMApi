@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div id="wrapper">
+        <div id="container">
+            
+
+          
+                  <h1>Ejemplo de Pagos:</h1>
+   <ul id="navigation">
+            {% for item in pagos %}
+{{ item.valor1 }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ item.valor2 }}{{ item.valor3 }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ item.valor4 }}&nbsp;   {{ item.valor5 }} 
+            {% endfor %}
+{% endblock %}

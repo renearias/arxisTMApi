@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Ingresos</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ ingreso.id }}</td>
+            </tr>
+            <tr>
+                <th>Representante</th>
+                <td><a href="{{path('representantes',{'page':ingreso.representante.id})}}">{{ ingreso.representante }}</a></td>
+            </tr>
+            <tr>
+                <th>Fecha</th>
+                <td>{% if ingreso.fecha %}{{ ingreso.fecha|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Monto</th>
+                <td>{{ ingreso.monto }}</td>
+            </tr>
+            <tr>
+                <th>Descripcion</th>
+                <td>{{ ingreso.descripcion }}</td>
+            </tr>
+            <tr>
+                <th>Referencia</th>
+                <td>{{ ingreso.referencia }}</td>
+            </tr>
+             <tr>
+                <th>Forma de Pago</th>
+                <td>{{ ingreso.formaPago.formaPago }}</td>
+            </tr>
+             <tr>
+                <th>Referencia</th>
+                <td>{{ ingreso.referencia }}</td>
+            </tr>
+             <tr>
+                <th>Cobrado por</th>
+                <td>{{ ingreso.collectedby }}</td>
+            </tr>
+            <tr>
+                <th>Facturas</th>
+                <td>
+                    <table class="table">
+                         <tr>
+                                <th>Factura</th>
+                                <th>Total</th>
+                                <th>Pagado</th>
+                                <th>Saldo</th>
+                                <th>Estado</th>
+                            </tr> 
+                    {%for factura in ingreso.facturas %}
+                        
+                           
+                            <tr>
+                                <td>{{factura}}</td>
+                                <td>{{factura.total}}</td>
+                                <td>{{factura.cobrado}}</td>
+                                <td>{{factura.saldoAPagar()}}</td>
+                                <td>{{factura.estado}}</td>
+                            </tr> 
+                        
+                    {%endfor%}
+                    </table>    
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a class="btn btn-default" href="{{ path('ingresos') }}">Regresar a la lista</a>
+        </li>
+        <li>
+            <a class="btn btn-warning" href="{{ path('ingresos_edit', { 'page': ingreso.id }) }}">Editar</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input class="btn btn-danger" type="submit" value="Eliminar">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

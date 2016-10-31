@@ -1,0 +1,89 @@
+{% block content -%}
+<div id="content">
+    <div class="row">
+        <big-breadcrumbs items="['Facturas', 'Mostrar']" icon="file"
+                         class="col-xs-12 col-sm-7 col-md-7 col-lg-4"></big-breadcrumbs>
+        <div smart-include="{{path('layout-sub-header')}}"></div>
+    </div>
+    <div class="row">
+
+    <table class="table record_properties">
+        <thead>
+            <tr>
+             <th style="text-align:right;" colspan="2" scope="col">
+                <div data-ng-controller="PrintCtrl">
+                    <a data-ng-click="openModal('detallefactura_imprimir',{id: {{entity.id}}  })" type="button" class="btn btn-app btn-success "><i class="fa fa-print bigger-160"></i> Imprimir</a>
+                </div>
+            </th>
+            </tr> 
+        </thead>
+        <tbody>
+            <tr>
+                <th>Nº</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            
+            <tr>
+                <th>Cliente</th>
+                <td>{{ entity.idcliente }}</td>
+            </tr>
+           
+            <tr>
+                <th>Emitido</th>
+                <td>{{ entity.emitido|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            
+        </tbody>
+    </table>
+             <table class="table table-striped table-primary registrados" collection-form>
+        <thead>
+             <tr><th colspan="4">Detalle de Factura</th></tr>
+             <tr>
+                 <th>Producto</th>
+                 <th>Cantidad</th>
+                 <th>Precio Unitario</th>
+                 <th>Precio Total</th>
+             </tr>
+       </thead>     
+       <tbody> 
+            {% for item in entity.items %}
+                <tr>
+                    <td>{{item.idproducto}}</td>
+                    <td>{{item.cantidad}} </td>
+                    <td>{{item.punitario}}</td>
+                    <td> {{(item.cantidad*item.punitario)|round(2)}}</td>
+                </tr>
+             {%endfor%}
+       </tbody>
+    </table>
+     <div class="row">
+        <div class="col-xs-10 text-right">Sub Total</div>
+        <div class="col-xs-2 text-right">{{entity.subtotal}}</div>
+      </div>
+      <div class="row">
+        <div class="col-xs-10 text-right">Iva (12%):</div>
+        <div class="col-xs-2 text-right">{{entity.ivaigv}}</div>
+      </div>
+      <div class="row">
+        <div class="col-xs-10 text-right"><b>Gran Total:</b></div>
+        <div class="col-xs-2 text-right"><b>{{entity.total}}</b></div>
+      </div>
+      <br/>
+    </div>
+    <div class="row">
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('facturas') }}">
+            Regresar a la lista
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('facturas_edit', { 'id': entity.id }) }}">
+            Editar
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+    </div>
+</div>
+{% endblock %}

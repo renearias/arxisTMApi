@@ -1,0 +1,10 @@
+NotifyAnnotations:
+   resource: "@NotifyBundle/Controller/"
+   type:     annotation
+   prefix:   /
+activities:
+    type: rest
+    resource: Multiservices\NotifyBundle\Controller\ActivityController
+    options:
+        expose: true
+    prefix: api

@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+       <style>
+        label{
+            display: table;
+        }
+        div.dataTables_filter input {
+          margin-left: 0px; 
+        }
+        .dataTable thead tr th:first-child{
+          min-width: 10px;  
+        }
+    </style>
+    <script>
+   function eliminarDuplicados(arr) {
+ var i,
+     len=arr.length,
+     out=[],
+     obj={};
+
+ for (i=0;i<len;i++) {
+    obj[arr[i]]=0;
+ }
+ for (i in obj) {
+    out.push(i);
+ }
+ return out;
+}
+</script>
+    <h1>Ingresos listado</h1>
+
+        {{ datatable_render_html(datatable) }}
+    <ul>
+        <li>
+            <a href="{{ path('ingresos',{'page':'new'}) }}">Crear nueva entrada</a>
+        </li>
+    </ul>   {{ datatable_render_js(datatable) }}
+{% endblock %}

@@ -1,0 +1,60 @@
+{%- block collection_widget_attributes -%}
+    id="{{ id|replace({'__name__':'{{$index}}'}) }}" name="{{ full_name|replace({'__name__':'{{$index}}'}) }}"
+    {%- if disabled %} disabled="disabled"{% endif -%}
+    {%- if required %} required="required"{% endif -%}
+    {%- for attrname, attrvalue in attr -%}
+        {{- " " -}}
+        {%- if attrname in ['placeholder', 'title'] -%}
+            {{- attrname }}="{{ translation_domain is same as(false) ? attrvalue : attrvalue|trans({}, translation_domain) }}"
+        {%- elseif attrvalue is same as(true) -%}
+            {{- attrname }}="{{ attrname }}"
+        {%- elseif attrvalue is not same as(false) -%}
+            {{- attrname }}="{{ attrvalue }}"
+        {%- endif -%}
+    {%- endfor -%}
+{%- endblock collection_widget_attributes -%}
+
+{%- block _multiservices_paypaybundle_facturas_items_entry_idproducto_widget -%}
+{% spaceless %}
+      {% set attr = attr|merge({class: (attr.class|default('') ~ ' form-control')|trim}) %}
+            {%- if required and placeholder is none and not placeholder_in_choices and not multiple -%}
+                {% set required = false %}
+            {%- endif -%}
+            <select {{ block('collection_widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %} style="width:100%">
+                {%- if placeholder is not none -%}
+                    <option value=""{% if required and value is empty %} selected="selected"{% endif %}>{{ placeholder != '' ? placeholder|trans({}, translation_domain) }}</option>
+                {%- endif -%}
+                {%- if preferred_choices|length > 0 -%}
+                    {% set options = preferred_choices %}
+                    {{- block('choice_widget_options') -}}
+                    {%- if choices|length > 0 and separator is not none -%}
+                        <option disabled="disabled">{{ separator }}</option>
+                    {%- endif -%}
+                {%- endif -%}
+                {%- set options = choices -%}
+                {{- block('choice_widget_options') -}}
+            </select>
+    {% endspaceless %}
+
+
+{%- endblock -%}
+{%- block collection_simple_widget -%}
+     {% if type is not defined or 'file' != type %}
+        {%- set attr = attr|merge({class: (attr.class|default('') ~ ' form-control')|trim}) -%}
+    {% endif %}
+    {%- set type = type|default('text') -%}
+    <input type="{{ type }}" {{ block('collection_widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+{%- endblock -%}
+{%- block _multiservices_paypaybundle_facturas_items_entry_cantidad_widget -%}
+   {{ block('collection_simple_widget') }}
+{%- endblock -%}
+{%- block _multiservices_paypaybundle_facturas_items_entry_punitario_widget -%}
+   {{ block('collection_simple_widget') }}
+{%- endblock -%}
+{%- block _multiservices_paypaybundle_facturas_items_entry_widget -%}
+    <td>{{form_widget(form.idproducto)}}{{form_errors(form.idproducto)}}</td>
+    <td>{{form_widget(form.cantidad)}}{{form_errors(form.cantidad)}}</td>
+    <td>{{form_widget(form.punitario)}}{{form_errors(form.punitario)}}</td>
+    <td>{{' {{item.cost * item.qty | currency: currencySymbol}}'}}</td>
+    <td> <a href  ng-click="removeItem(item)" class="btn btn-danger">[X]</a></td>
+{%- endblock -%}

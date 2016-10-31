@@ -1,0 +1,12 @@
+PayPayAnnotations:
+   resource: "@PayPayBundle/Controller/"
+   type:     annotation
+   prefix:   /
+pay_pay_ingresos:
+    resource: "@PayPayBundle/Resources/config/routing/ingresos.yml"
+pay_pay_facturas:
+    resource: "@PayPayBundle/Resources/config/routing/facturas.yml"        
+pay_pay_productos:
+    resource: "@PayPayBundle/Resources/config/routing/productos.yml"
+pay_pay_formaspagos:
+    resource: "@PayPayBundle/Resources/config/routing/formaspagos.yml"

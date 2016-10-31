@@ -1,0 +1,53 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Notificaciones list</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Codnotificacion</th>
+                <th>Notificacionuser</th>
+                <th>Notificacionrole</th>
+                <th>Notificaciontimestamp</th>
+                <th>Notificaciontitulo</th>
+                <th>Notificacion</th>
+                <th>Notificacionimg</th>
+                <th>Notificacionestado</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('notificaciones_show', { 'id': entity.codnotificacion }) }}">{{ entity.codnotificacion }}</a></td>
+                <td>{{ entity.notificacionuser }}</td>
+                <td>{{ entity.notificacionrole }}</td>
+                <td>{{ entity.notificaciontimestamp }}</td>
+                <td>{{ entity.notificaciontitulo }}</td>
+                <td>{{ entity.notificacion }}</td>
+                <td>{{ entity.notificacionimg }}</td>
+                <td>{{ entity.notificacionestado }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('notificaciones_show', { 'id': entity.codnotificacion }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('notificaciones_edit', { 'id': entity.codnotificacion }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('notificaciones_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+    {% endblock %}

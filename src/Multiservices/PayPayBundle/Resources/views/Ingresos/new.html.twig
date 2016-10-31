@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Ingresos creacion</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <input type="submit" value="Crear" />
+    {{ form_end(form) }}
+
+    <ul>
+        <li>
+            <a href="{{ path('ingresos') }}">Regresar a la lista</a>
+        </li>
+    </ul>
+    <script>
+var $representante = $('#ingresos_representante');
+// When sport gets selected ...
+$representante.change(function() {
+  // ... retrieve the corresponding form.
+  var $form = $(this).closest('form');
+  // Simulate form data, but only include the selected sport value.
+  var data = {};
+  data[$representante.attr('name')] = $representante.val();
+  // Submit data via AJAX to the form's action path.
+  $.ajax({
+    //url : $form.attr('action'),
+    url : Routing.generate('new_ingreso',{_format:'html'}),
+    type: $form.attr('method'),
+    data : data,
+    success: function(html) {
+      // Replace current position field ...
+      $('#ingresos_facturas').replaceWith(
+        // ... with the returned one from the AJAX response.
+        $(html).find('#ingresos_facturas')
+      );
+      // Position field now displays the appropriate positions.
+    }
+  });
+});
+</script>        
+{% endblock %}

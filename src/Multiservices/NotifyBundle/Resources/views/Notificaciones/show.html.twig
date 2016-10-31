@@ -1,0 +1,56 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Notificaciones</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Codnotificacion</th>
+                <td>{{ entity.codnotificacion }}</td>
+            </tr>
+            <tr>
+                <th>Notificacionuser</th>
+                <td>{{ entity.notificacionuser }}</td>
+            </tr>
+            <tr>
+                <th>Notificacionrole</th>
+                <td>{{ entity.notificacionrole }}</td>
+            </tr>
+            <tr>
+                <th>Notificaciontimestamp</th>
+                <td>{{ entity.notificaciontimestamp }}</td>
+            </tr>
+            <tr>
+                <th>Notificaciontitulo</th>
+                <td>{{ entity.notificaciontitulo }}</td>
+            </tr>
+            <tr>
+                <th>Notificacion</th>
+                <td>{{ entity.notificacion }}</td>
+            </tr>
+            <tr>
+                <th>Notificacionimg</th>
+                <td>{{ entity.notificacionimg }}</td>
+            </tr>
+            <tr>
+                <th>Notificacionestado</th>
+                <td>{{ entity.notificacionestado }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('notificaciones') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('notificaciones_edit', { 'id': entity.codnotificacion }) }}">
+            Edit
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}

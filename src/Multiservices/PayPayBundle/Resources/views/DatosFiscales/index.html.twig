@@ -1,0 +1,76 @@
+{% block content -%}
+<div id="content">
+    <div class="row">
+        <big-breadcrumbs items="['DatosFiscales', 'Resumen']" icon="file"
+                         class="col-xs-12 col-sm-7 col-md-7 col-lg-4"></big-breadcrumbs>
+        <div smart-include="{{path('layout-sub-header')}}"></div>
+    </div>
+    <div class="row">
+
+    <table class="table records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Razonsocial</th>
+                <th>Nombrecomercial</th>
+                <th>Ruc</th>
+                <th>Direccion</th>
+                <th>Obligadocontabilidad</th>
+                <th>Ambiente</th>
+                <th>Serie</th>
+                <th>Certificado</th>
+                <th>Clave</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('datosfiscales_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.razonSocial }}</td>
+                <td>{{ entity.nombreComercial }}</td>
+                <td>{{ entity.ruc }}</td>
+                <td>{{ entity.direccion }}</td>
+                <td>{{ entity.obligadoContabilidad }}</td>
+                <td>{{ entity.ambiente }}</td>
+                <td>{{ entity.serie }}</td>
+                <td>{{ entity.certificado }}</td>
+                <td>{{ entity.clave }}</td>
+                <td>
+                <ul>                    
+                    
+                    
+                    
+                    
+                                                                                                            
+                                             
+                    <li>
+                        <a href="{{ path('datosfiscales_show', { 'id': entity.id }) }}">mostrar</a>
+                    </li>                    
+                    
+                    
+                    
+                    
+                                                                                                            
+                                             
+                    <li>
+                        <a href="{{ path('datosfiscales_edit', { 'id': entity.id }) }}">editar</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    <div class="row">    
+        <ul>
+        <li>
+            <a href="{{ path('datosfiscales_new') }}">
+                Crear nueva entrada
+            </a>
+        </li>
+    </ul>
+        </div>
+</div>    
+{% endblock %}

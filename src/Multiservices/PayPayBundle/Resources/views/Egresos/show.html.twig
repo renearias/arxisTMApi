@@ -1,0 +1,55 @@
+{% block content -%}
+<div id="content">
+    <div class="row">
+        <big-breadcrumbs items="['Egresos', 'Mostrar']" icon="file"
+                         class="col-xs-12 col-sm-7 col-md-7 col-lg-4"></big-breadcrumbs>
+        <div smart-include="{{path('layout-sub-header')}}"></div>
+    </div>
+    <div class="row">
+
+    <table class="table record_properties">
+        <tbody>
+            <tr>
+                <th>Codigo</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Fecha</th>
+                <td>{{ entity.fecha|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Monto</th>
+                <td>{{ entity.monto }}</td>
+            </tr>
+            <tr>
+                <th>Descripcion</th>
+                <td>{{ entity.descripcion }}</td>
+            </tr>
+            <tr>
+                <th>Referencia</th>
+                <td>{{ entity.referencia }}</td>
+            </tr>
+            <tr>
+                <th>Pagado por</th>
+                <td>{{ entity.paidby }}</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    <div class="row">
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('egresos') }}">
+            Regresar a la lista
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('egresos_edit', { 'id': entity.id }) }}">
+            Editar
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+    </div>
+</div>
+{% endblock %}

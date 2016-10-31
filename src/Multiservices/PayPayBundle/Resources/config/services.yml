@@ -1,0 +1,49 @@
+services:
+#    pay_pay.example:
+#        class: Multiservices\PayPayBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]
+    paypaybundle.form.handler.ingresos:
+       class: AppBundle\Form\Handler\FormHandler
+       arguments: ["@doctrine.orm.entity_manager","@form.factory","@paypaybundle.form.ingresostype"]
+    paypaybundle.form.ingresostype:
+        class: Multiservices\PayPayBundle\Form\IngresosType
+    paypaybundle.form.handler.facturas:
+       class: AppBundle\Form\Handler\FormHandler
+       arguments: ["@doctrine.orm.entity_manager","@form.factory","@paypaybundle.form.facturastype"]
+    paypaybundle.form.facturastype:
+        class: Multiservices\PayPayBundle\Form\FacturasType    
+    paypaybundle.form.handler.productos:
+       class: AppBundle\Form\Handler\FormHandler
+       arguments: ["@doctrine.orm.entity_manager","@form.factory","@paypaybundle.form.productostype"]
+    paypaybundle.form.productostype:
+        class: Multiservices\PayPayBundle\Form\ProductosType
+    paypaybundle.form.handler.formaspagos:
+       class: AppBundle\Form\Handler\FormHandler
+       arguments: ["@doctrine.orm.entity_manager","@form.factory","@paypaybundle.form.formaspagostype"]
+    paypaybundle.form.formaspagostype:
+        class: Multiservices\PayPayBundle\Form\FormasPagosType 
+        
+    paypay.form.type.formasPagos:
+        class: Multiservices\PayPayBundle\Form\Type\FormasPagosType
+        arguments: ["@doctrine.orm.entity_manager"]
+        tags:
+            - { name: form.type, alias: formasPagos }
+    paypaybundle_datatable.ingresos:
+        class: Multiservices\PayPayBundle\Datatables\IngresosDatatable
+        parent: sg_datatables.datatable.abstract          
+    paypaybundle_datatable.egresos:
+        class: Multiservices\PayPayBundle\Datatables\EgresosDatatable
+        parent: sg_datatables.datatable.abstract
+    paypaybundle_datatable.facturas:
+        class: Multiservices\PayPayBundle\Datatables\FacturasDatatable
+        parent: sg_datatables.datatable.abstract    
+    paypaybundle_datatable.productos:
+        class: Multiservices\PayPayBundle\Datatables\ProductosDatatable
+        parent: sg_datatables.datatable.abstract   
+    paypaybundle_ingresos.listener:
+        class: Multiservices\PayPayBundle\EventListener\IngresosListener
+        arguments: ["@security.token_storage","@service_container"]
+        tags:
+            - { name: doctrine.orm.entity_listener }
+           # - { name: doctrine.event_listener, event: preUpdate, method: preUpdate }
+           # - { name: doctrine.event_listener, event: postFlush, method: postFlush }        

@@ -1,0 +1,25 @@
+#para rutas front
+facturas:
+    path:      /facturas/{page}
+    defaults:  { _controller: AppBundle:Default:inicio, page: index }
+    requirements:
+        page: \d+|new
+    options:
+        expose: true
+#rutas del back o api         
+facturas_api:
+    type: rest
+    resource: "@PayPayBundle/Controller/FacturasController.php"
+    options:
+        expose: true
+    prefix: api 
+facturas_results:
+    path:     /facturas/results
+    defaults: { _controller: "PayPayBundle:Facturas:results" }
+    methods:  [GET, POST]
+facturas_edit:
+    path:     /facturas/{page}/edit
+    defaults:  { _controller: AppBundle:Default:inicio, page: index }
+    methods:  [GET, POST]
+    options:
+        expose: true

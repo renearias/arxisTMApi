@@ -1,0 +1,25 @@
+#para rutas front
+ingresos:
+    path:      /ingresos/{page}
+    defaults:  { _controller: AppBundle:Default:inicio, page: index }
+    requirements:
+        page: \d+|new
+    options:
+        expose: true
+#rutas del back o api         
+ingresos_api:
+    type: rest
+    resource: "@PayPayBundle/Controller/IngresosController.php"
+    options:
+        expose: true
+    prefix: api 
+ingresos_results:
+    path:     /ingresos/results
+    defaults: { _controller: "PayPayBundle:Ingresos:results" }
+    methods:  [GET, POST]
+ingresos_edit:
+    path:     /ingresos/{page}/edit
+    defaults:  { _controller: AppBundle:Default:inicio, page: index }
+    methods:  [GET, POST]
+    options:
+        expose: true

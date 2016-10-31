@@ -1,0 +1,35 @@
+{% block content -%}
+<div id="content">
+    <div class="row">
+        <big-breadcrumbs items="['Egresos', 'Resumen']" icon="file"
+                         class="col-xs-12 col-sm-7 col-md-7 col-lg-4"></big-breadcrumbs>
+        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-8">
+		<ul id="sparks">
+			<li class="sparks-info">
+                            <a class="btn btn-success"href="{{ path('egresos_new') }}">
+                            <i class="fa fa-dollar"></i> Registrar un Gasto
+                            </a>
+                        </li>
+		</ul>
+	</div>
+    </div>
+     <div class="row">
+
+    
+    {{ datatable_render_html(datatable) }}
+    
+    </div>
+    <div class="row">    
+        <ul>
+        <li>
+            <a href="{{ path('egresos_new') }}">
+                Crear nueva entrada
+            </a>
+        </li>
+    </ul>
+        </div>
+</div>
+<script>
+      {{ datatable_render_jsns(datatable) }}
+</script>            
+{% endblock %}
