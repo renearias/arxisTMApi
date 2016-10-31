@@ -18,6 +18,7 @@ class AppKernel extends Kernel
             new AppBundle\AppBundle(),
             new Arxis\ContableBundle\ArxisContableBundle(),
             new Multiservices\PayPayBundle\PayPayBundle(),
+            new Multiservices\TaskBundle\TaskBundle(),
             new FOS\OAuthServerBundle\FOSOAuthServerBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new FOS\RestBundle\FOSRestBundle(),

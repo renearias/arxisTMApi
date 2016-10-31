@@ -1,3 +1,4 @@
 imports:
     - { resource: "@ArxisContableBundle/Resources/config/types.yml" }
     - { resource: "@PayPayBundle/Resources/config/types.yml" }
+    - { resource: "@TaskBundle/Resources/config/types.yml" }
