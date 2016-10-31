@@ -1,6 +1,9 @@
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation
+arxis_contable:
+    resource: "@ArxisContableBundle/Resources/config/routing.yml"
+    prefix:   /    
 hwi_oauth_redirect:
     resource: "@HWIOAuthBundle/Resources/config/routing/redirect.xml"
     prefix:   /connect
@@ -15,7 +18,7 @@ hwi_oauth_login:
 
 NelmioApiDocBundle:
     resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
-    prefix:   /api/doc
+    prefix:   /doc
 
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
@@ -25,3 +28,7 @@ fos_oauth_server_token:
 
 fos_oauth_server_authorize:
     resource: "@FOSOAuthServerBundle/Resources/config/routing/authorize.xml"    
+
+sg_datatables_bundle:
+    resource: "@SgDatatablesBundle/Controller/"
+    type:     annotation

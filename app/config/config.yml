@@ -2,6 +2,7 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
+    - { resource: types.yml }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
@@ -47,6 +48,8 @@ doctrine:
         user:     "%database_user%"
         password: "%database_password%"
         charset:  UTF8
+        mapping_types:
+            enum: string
         # if using pdo_sqlite as your database driver:
         #   1. add the path in parameters.yml
         #     e.g. database_path: "%kernel.root_dir%/data/data.db3"
@@ -123,7 +126,22 @@ fos_user:
     user_class: AppBundle\Entity\Usuario
     
 
-nelmio_api_doc: ~
+# Nelmio API Doc
+nelmio_api_doc:
+    name: ArxisTM API
+    sandbox:
+        authentication:
+            delivery: header
+            name:     Authorization
+        accept_type:        "application/json"
+        body_format:
+            formats:        [ "json","html" ]
+            default_format: "json"
+        request_format:
+            method: accept_header
+            formats:
+                html:       "text/html"    
+                json:       "application/json"
 
 nelmio_cors:
     defaults:
