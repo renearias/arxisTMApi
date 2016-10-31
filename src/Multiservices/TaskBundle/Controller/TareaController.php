@@ -3,450 +3,276 @@
 namespace Multiservices\TaskBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Multiservices\TaskBundle\Entity\Tarea;
-use Multiservices\TaskBundle\Entity\Tasktemplate;
-use Multiservices\TaskBundle\Form\TareaType;
-use Multiservices\TaskBundle\Form\Type\StateTaskType;
 use Symfony\Component\HttpFoundation\Response;
-use Multiservices\TaskBundle\TaskBox\TaskBox;
+use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\RestBundle\Routing\ClassResourceInterface;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use AppBundle\Exception\InvalidFormException;
+use Multiservices\TaskBundle\Entity\Tarea;
+use Multiservices\TaskBundle\Form\TareaType;
+
 /**
  * Tarea controller.
  *
- * @Route("/tarea")
+ * @Rest\RouteResource("tarea")
  */
-class TareaController extends Controller
+class TareaController extends FOSRestController implements ClassResourceInterface
 {
 
     /**
      * Lists all Tarea entities.
      *
-     * @Route("", name="tarea")
-     * @Method("GET")
+     * @ApiDoc(
+     *   resource = true,
+     *   section="Tarea",
+     *   statusCodes = {
+     *     200 = "Returned when successful",
+     *     404 = "Returned when not found"
+     *   }
+     * )
+     *
+     * @Rest\View()
+     *
      */
-    public function indexAction()
+    public function cgetAction()
     {
-       return $this->render('::basesmartpanelangular.html.twig');
+        $em = $this->getDoctrine()->getManager();
+
+        $tareas = $em->getRepository('TaskBundle:Tarea')->findAll();
+
+        //$tareas_datatable = $this->get("taskbundle_datatable.tareas");
+        //$tareas_datatable->buildDatatable();
+
+        $view = $this->view($tareas)
+            ->setTemplate('TaskBundle:Tarea:index.html.twig')
+            ->setTemplateData([
+                            'tareas' => $tareas
+                             ]);
+        return $tareas;
     }
 
     /**
-     * Lists all Tarea entities.
+     * Get results from Tarea entity.
      *
-     * @Route("/api", name="tarea_api", options={"expose":true})
-     * @Method("GET")
-     * @Template("TaskBundle:Tarea:index.html.twig")
+     * @ApiDoc(
+     *   resource = true,
+     *   section="Tarea",
+     *   filters={
+     *      {"name"="search[value]", "dataType"="string", "default"="", "required":true},
+     *      {"name"="draw", "dataType"="integer"}
+     *   },
+     *   statusCodes = {
+     *     200 = "Returned when successful",
+     *     404 = "Returned when not found"
+     *   }
+     * )
+     *
+     * @Rest\View()
+     *
      */
-    public function indexApiAction()
+    public function resultsAction(Request $request)
     {
-        $tareaDatatable = $this->get("lex_datatables.tarea");
-        $tareaDatatable->buildDatatable();
-        
-        return array(
-           'datatable'=>$tareaDatatable,
-        );
-    }
-    
-     /**
-     * Get results tarea entities.
-     *
-     * @Route("/results", name="tarea_results")
-     *
-     * @return Response
-     */
-    
-    public function tareaResultsAction()
-    {
-        /**
-         * @var \Sg\DatatablesBundle\Datatable\Data\DatatableData $datatable
-         */
-        $datatable = $this->get('lex_datatables.tarea');
-         $datatable->buildDatatable();
-         $query = $this->get('sg_datatables.query')->getQueryFrom($datatable);
 
-       $function = function($qb)
-        {
-        
-            $user = $this->get('security.token_storage')->getToken()->getUser(); 
-            if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN'))
-            {
-//                $qb->andWhere(":user MEMBER OF casos.responsablesCaso");
-//                $qb->setParameter('user',$user);
-            }else
-            {
-                $qb->andWhere("tarea.assignedto = :user");
-                $qb->setParameter('user',$user);
-            } 
-            
-        };
-        
-       
-        // Add the callback function as WhereResult
-        //$query->addWhereResult($function);
-        //Or add the callback function as WhereAll
-        $query->addWhereAll($function);
+        $datatable = $this->get('taskbundle_datatable.tareas');
+        $datatable->buildDatatable();
+        $query = $this->get('sg_datatables.query')->getQueryFrom($datatable);
+
         return $query->getResponse();
     }
-    
+
     /**
-     * Lists all Tareas entities.
+     * Crea una nueva Tarea entidad.
      *
-     * @Route("/inbox", name="inbox_tareas")
-     * @Method("GET")
-     * @Template("TaskBundle:Tarea:inbox.html.twig")
-     */
-    public function inboxAction()
-    {
-        $em = $this->getDoctrine()->getManager();
-        $user = $this->get('security.token_storage')->getToken()->getUser();
-        $entities = $em->getRepository('TaskBundle:Tarea')->inbox($user);
-        //$tempo = $this->get('timeago');
-        
-        return array(
-            'entities' => $entities,
-        );
-    }
-    
-    /**
-     * Lists all Tareas entities.
+     * @ApiDoc(
+     *   resource = true,
+     *   section="Tarea",
+     *   input = {
+     *              "class"= "Multiservices\TaskBundle\Form\TareaType",
+     *              "name"= ""
+     *            },
+     *   output = "Multiservices\TaskBundle\Entity\Tarea",
+     *    statusCodes = {
+     *      201 = "Retorna cuando se crea un nuevo Tarea",
+     *      400 = "Returna cuando el formulario contiene errores" 
+     *   }
+     * )
+     * @Rest\View(
+     *   template = "tarea/new.html.twig",
+     *   statusCode = Response::HTTP_BAD_REQUEST
+     * )
      *
-     * @Route("/api/activities/activity-tasks.{_format}", name="activity-tasks", options={"expose":true})
-     * @Method("GET")
-     */
-    public function inboxApiAction($_format='')
-    {
-        $em = $this->getDoctrine()->getManager();
-        $user = $this->get('security.token_storage')->getToken()->getUser();
-        $entities = $em->getRepository('TaskBundle:Tarea')->inbox($user);
-
-        $taskBox=new TaskBox();
-        $taskBox->setData($entities);
-        $serializer = $this->get('jms_serializer');
-        $dataTaskBox=$serializer->serialize($taskBox, 'json');
-
-        $response=new JsonResponse();
-        $response->setData(json_decode($dataTaskBox));
-        return $response;
-    }
-    
-    
-    /**
-     * Creates a new Tarea entity.
+     * @param Request $request the request object
      *
-     * @Route("/", name="tarea_create", options={"expose":true})
-     * @Method("POST")
-     * @Template("TaskBundle:Tarea:new.html.twig")
+     * @return FormTypeInterface[]|View
      */
-    public function createAction(Request $request)
+    public function postAction(Request $request)
     {
-        $entity = new Tarea();
-        $form = $this->createCreateForm($entity);
-        $form->handleRequest($request);
 
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            //$usr= $this->get('security.context')->getToken()->get();
-            $usr= $this->get('security.token_storage')->getToken()->getUser();
-            $entity->setCreatedby($usr);
-            $em->persist($entity);
-            $em->flush();
-
-            //return $this->redirect($this->generateUrl('tarea_show', array('id' => $entity->getId())));
-                $response_redir=new JsonResponse();
-                $response_redir->setData(array('id'=>$entity->getId()));
-                $response_redir->setStatusCode(201);
-                return $response_redir;
+        try {
+            $tarea = $this->getHandler()->post(
+                new Tarea(),
+                $request->request->all()
+            );
+            $routeOptions = array(
+                //'tarea'        => $tarea->getId(),
+                'id'        => $tarea->getId(),
+                //'_format'    => $request->get('_format'),
+            );
+            return $this->handleView($this->view($routeOptions, Response::HTTP_CREATED));
+            /*return $this->routeRedirectView(
+                'get_tarea',
+                $routeOptions,
+                Response::HTTP_CREATED
+            );*/
+        } catch (InvalidFormException $e) {
+            return $e->getForm();
         }
-
-        return array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        );
-    }
-
-    /**
-     * Creates a form to create a Tarea entity.
-     *
-     * @param Tarea $entity The entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createCreateForm(Tarea $entity)
-    {
-        $form = $this->createForm(new TareaType(), $entity, array(
-            //'action' => $this->generateUrl('tarea_create'),
-            'method' => 'POST',
-        ));
-
-        $form->add('submit', 'submit', array('label' => 'Crear'));
-
-        return $form;
-    }
-
-    /**
-     * Displays a form to create a new Tarea entity.
-     *
-     * @Route("/new", name="tarea_new")
-     * @Method("GET")
-     * @Template()
-     */
-    public function newAction()
-    {
-       return $this->render('::basesmartpanelangular.html.twig');
-    }
-
-    /**
-     * Displays a form to create a new Tarea entity.
-     *
-     * @Route("/api/new", name="tarea_api_new", options={"expose":true})
-     * @Method("GET")
-     * @Template("TaskBundle:Tarea:new.html.twig")
-     */
-    public function newApiAction()
-    {
-        $entity = new Tarea();
-        $form   = $this->createCreateForm($entity);
-
-        return array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        );
     }
 
     /**
      * Finds and displays a Tarea entity.
      *
-     * @Route("/{id}", name="tarea_show", requirements={"id":"\d+"}, options={"expose":true})
-     * @Method("GET")
-     */
-    public function showAction($id)
-    {
-       return $this->render('::basesmartpanelangular.html.twig');
-    }
-
-    /**
-     * Finds and displays a Tarea entity.
+     * @ApiDoc(
+     *   resource = true,
+     *   output = "Multiservices\TaskBundle\Entity\Tarea",
+     *   section="Tarea",
+     *    statusCodes = {
+     *      200 = "Retorna la entidad Tarea",
+     *      404 = "Retorna cuando no se ecuentra objeto" 
+     *   }
+     * )
      *
-     * @Route("/api/{id}", name="tarea_api_show", options={"expose":true})
-     * @Method("GET")
-     * @Template("TaskBundle:Tarea:show.html.twig")
      */
-    public function showApiAction($id)
+    public function getAction(Tarea $tarea)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('TaskBundle:Tarea')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Tarea entity.');
-        }
-
-        $deleteForm = $this->createDeleteForm($id);
-
-        return array(
-            'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),
-        );
+        
+        $view = $this->view($tarea, 200)
+            ->setTemplate('TaskBundle:Tarea:show.html.twig')
+            ->setTemplateData(['tarea'=>$tarea]);
+        return $this->handleView($view);
     }
 
     /**
-  * Finds and displays a Tarea entity.
-  *
-     * @Route("/takstemplate/getTemplate/{id}", name="tarea_getTemplate", options={"expose"=true})
-     * @Method("GET")
-     * @Template()
+     * Replaces an existing Tarea entity.
+     *
+     * @ApiDoc(
+     *   resource = true,
+     *   input = {
+     *              "class"= "Multiservices\TaskBundle\Form\TareaType",
+     *              "name"= ""
+     *            },
+     *   output = "Multiservices\TaskBundle\Entity\Tarea",
+     *   section="Tarea",
+     *    statusCodes = {
+     *      201="Retorna cuando Tarea ha sido creado exitosamente",
+     *      204="Retorna cuando un existente Tarea ha sido actualizado exitosamente",
+     *      400="Retorna cuando la data del formulario es invalida"
+     *   }
+     * )
+     * @Rest\View()
+     * @param Request $request
+     * @param integer $id
+     * @return FormTypeInterface[]|\FOS\RestBundle\View\View|null
      */
-    
-      public function getTemplateAction($id)
+    public function putAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
+        $tarea = $em->getRepository('TaskBundle:Tarea')->find($id);
 
-        $entity = $em->getRepository('TaskBundle:Tasktemplate')->find($id);
-          $array=array();
-          $array['id']= $entity->getId();
-          
-          $array['tarea']= $entity->getTarea();
-          $array['descripcion']= $entity->getDescripcion();
-       // if (!$entity) {
-       //     throw $this->createNotFoundException('Unable to find Tarea entity.');
-      //  }
-        
-  //you can return result as JSON
-   
-    $response=new Response(json_encode($array));
-   
-    $response->headers->set('Content-Type', 'application/json');
-    
-  //you can return result as JSON
-  return $response; 
-    }
-
-   
-    
-  /**
-  * Finds and displays a Tarea entity.
-  *
-  * @Route("/{id}/finish", name="tarea_finish", options={"expose":true})
-  * @Method("GET")
-  * @return Response
-  */
-    
-  public function finishAction(Request $request, $id)
-    {
-        $isAjax = $request->isXmlHttpRequest();
-
-        if ($isAjax) {
-
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('TaskBundle:Tarea')->find($id);
-            if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Tarea entity.');
+        try {
+            if ($tarea === null) {
+                $statusCode = Response::HTTP_CREATED;
+                $tarea = $this->getHandler()->post(
+                    new Tarea(),
+                    $request->request->all()
+                );
+            } else {
+                $statusCode = Response::HTTP_NO_CONTENT;
+                $tarea = $this->getHandler()->put(
+                    $tarea,
+                    $request->request->all()
+                );
             }
-            $entity->setState(StateTaskType::FINALIZADA);
-            $usr= $this->get('security.token_storage')->getToken()->getUser();
-            //$entity=new Tarea();
-            $entity->setFinishby($usr);
-            $entity->setFinished(New \Datetime());
-            $em->flush();
-
-            return $this->redirect($this->generateUrl('tarea_api_show', array('id' => $id)));
-            //return new Response("Success", 200);
+            $routeOptions = array(
+                'tarea'        => $tarea->getId(),
+                '_format'   => $request->get('_format')
+            );
+            return $this->routeRedirectView('get_tarea', $routeOptions, $statusCode);
+        } catch (InvalidFormException $e) {
+            return $e->getForm();
         }
-
-        return new Response("Bad Request", 400);
-    }
-    /**
-     * Displays a form to edit an existing Tarea entity.
-     *
-     * @Route("/{id}/edit", name="tarea_edit", requirements={"id":"\d+"}, options={"expose":true})
-     * @Method("GET")
-     */
-    public function editAction($id)
-    {
-       return $this->render('::basesmartpanelangular.html.twig');
     }
 
     /**
-    * Creates a form to edit a Tarea entity.
-    *
-    * @param Tarea $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
-    private function createEditForm(Tarea $entity)
+     * Updates an existing Tarea entity.
+     *
+     * @ApiDoc(
+     *   resource = true,
+     *   input = {
+     *              "class"= "Multiservices\TaskBundle\Form\TareaType",
+     *              "name"= ""
+     *            },
+     *   output = "Multiservices\TaskBundle\Entity\Tarea",
+     *   section="Tarea",
+     *    statusCodes = {
+     *      204="Returned when an existing Tarea has been successfully updated",
+     *      400="Returned when the posted data is invalid",
+     *      404="Returned when trying to update a non existent Tarea"
+     *   }
+     * )
+     * @Rest\View()
+     * @param Request $request
+     * @param Tarea $tarea
+     * @return FormTypeInterface[]|\FOS\RestBundle\View\View|null
+     */
+    public function patchAction(Request $request, Tarea $tarea)
     {
-        $form = $this->createForm(new TareaType(), $entity, array(
-            //'action' => $this->generateUrl('tarea_update', array('id' => $entity->getId())),
-            'method' => 'PUT',
-        ));
+        
 
-        $form->add('submit', 'submit', array('label' => 'Actualizar'));
-
-        return $form;
+        try {
+            $tarea = $this->getHandler()->patch(
+                $tarea,
+                $request->request->all()
+            );
+            $routeOptions = array(
+                'tarea'        => $tarea->getId(),
+                '_format'   => $request->get('_format')
+            );
+            return $this->routeRedirectView('get_tarea', $routeOptions, Response::HTTP_NO_CONTENT);
+        } catch (InvalidFormException $e) {
+            return $e->getForm();
+        }
     }
 
-    /**
-     * Displays a form to edit an existing Tarea entity.
-     *
-     * @Route("/api/{id}/edit", name="tarea_api_edit", requirements={"id":"\d+"}, options={"expose":true})
-     * @Method("GET")
-     * @Template("TaskBundle:Tarea:edit.html.twig")
-     */
-    public function editApiAction($id)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('TaskBundle:Tarea')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Tarea entity.');
-        }
-
-        $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($id);
-
-        return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        );
-    }    /**
-     * Edits an existing Tarea entity.
-     *
-     * @Route("/{id}", name="tarea_update", options={"expose":true})
-     * @Method("PUT")
-     * @Template("TaskBundle:Tarea:edit.html.twig")
-     */
-    public function updateAction(Request $request, $id)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('TaskBundle:Tarea')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Tarea entity.');
-        }
-
-        $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createEditForm($entity);
-        $editForm->handleRequest($request);
-
-        if ($editForm->isValid()) {
-            $em->flush();
-
-            return $this->redirect($this->generateUrl('tarea_api_edit', array('id' => $id)));
-        }
-
-        return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        );
-    }
-    
     /**
      * Deletes a Tarea entity.
      *
-     * @Route("/{id}", name="tarea_delete")
-     * @Method("DELETE")
+     * @ApiDoc(
+     *      resource = true,
+     *      section="Tarea",
+     *      statusCodes = {
+     *         204="Retorna cuando Tarea existente  ha sido eliminado completamente",
+     *         404="Retorna cuando intenta eliminar una Tarea no existente"
+     *      }
+     *  )
+     *
      */
-    public function deleteAction(Request $request, $id)
+    public function deleteAction(Request $request, Tarea $tarea)
     {
-        $form = $this->createDeleteForm($id);
-        $form->handleRequest($request);
+        $this->getHandler()->delete($tarea);
 
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('TaskBundle:Tarea')->find($id);
-
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Tarea entity.');
-            }
-
-            $em->remove($entity);
-            $em->flush();
-        }
-
-        return $this->redirect($this->generateUrl('tarea'));
+        return $this->routeRedirectView('get_tarea', array(), Response::HTTP_NO_CONTENT);
     }
 
+       
     /**
-     * Creates a form to delete a Tarea entity by id.
+     * Returns the required handler for this controller
      *
-     * @param mixed $id The entity id
-     *
-     * @return \Symfony\Component\Form\Form The form
+     * @return \AppBundle\Form\FormHandler
      */
-    private function createDeleteForm($id)
+    private function getHandler()
     {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('tarea_delete', array('id' => $id)))
-            ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Eliminar'))
-            ->getForm()
-        ;
+        return $this->get('taskbundle.form.handler.tarea');
     }
 }
