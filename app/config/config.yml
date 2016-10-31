@@ -105,20 +105,43 @@ fos_oauth_server:
         user_provider: fos_user.user_provider.username_email
 
 fos_rest:
+    #disable_csrf_role: ROLE_API
+    param_fetcher_listener: true
+    format_listener:  true
+    body_listener: true
+    view:
+        view_response_listener:
+            enabled:              true
+            force:                false
+        #view_response_listener: 'force'
+        exception_wrapper_handler:  null
+        formats:
+            html: true
+            jsonp: true
+            json: true
+            xml: false
+            rss: false
+        templating_formats:
+            html: true    
+        mime_types:
+            html: ['text/html']
+            json: ['application/json; charset=UTF-8', 'application/json', 'application/x-json']
+            jpg: 'image/jpeg'
+            png: 'image/png'
+        jsonp_handler: ~
+        serialize_null: false
+        force_redirects:
+            html: true
+    serializer:
+        serialize_null: false
     routing_loader:
-        default_format: json                            # All responses should be JSON formated
-        include_format: false                           # We do not include format in request, so that all responses
-                                                        # will eventually be JSON formated        
-    #param_fetcher_listener: true
-    #body_listener: true
-          
-    #view:
-    #    view_response_listener:
-    #        enabled:              true
-    #        force:                false
-    #    serialize_null:       false
-    #serializer:
-    #    serialize_null:       false   
+        default_format:  json
+        include_format:  false
+    format_listener:
+        rules:
+            - { path: ^/,prefer_extension: true,fallback_format: ~, priorities: ['json','jsonp']}
+    exception:
+        enabled: true
         
 fos_user:
     db_driver: orm
