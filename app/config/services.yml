@@ -7,6 +7,15 @@ services:
 #    service_name:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+    twig.extension.readable_html_enum_value:
+      class: AppBundle\Twig\Extension\ReadableHtmlEnumValueExtension
+      arguments: [%doctrine.dbal.connection_factory.types%]
+      tags:
+          - { name: twig.extension }
+    twig.extension.url64:
+      class: AppBundle\Twig\Extension\Base64Extension
+      tags:
+          - { name: twig.extension }
     hwi_oauth.user.provider.entity:
         class: HWI\Bundle\OAuthBundle\Security\Core\User\OAuthUserProvider
     my.fos.user_provider:
@@ -25,3 +34,18 @@ services:
             - '@my.fos.user_provider'
         tags:
             - { name: fos_oauth_server.grant_extension, uri: 'https://facebook.com/' }
+    twig.extension.readable_html_enum_value:
+      class: AppBundle\Twig\Extension\ReadableHtmlEnumValueExtension
+      arguments: [%doctrine.dbal.connection_factory.types%]
+      tags:
+          - { name: twig.extension }
+    twig.extension.url64:
+      class: AppBundle\Twig\Extension\Base64Extension
+      tags:
+          - { name: twig.extension }      
+    #HANDLERS
+    #appbundle.form.handler.usuario:
+    #   class: AppBundle\Form\Handler\FormHandler
+    #   arguments: ["@doctrine.orm.entity_manager","@form.factory","@appbundle.form.usuariotype"]
+    #appbundle.form.usuariotype:
+    #    class: AppBundle\Form\UsuarioType        

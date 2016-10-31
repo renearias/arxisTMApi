@@ -3,6 +3,9 @@ app:
     type:     annotation
 arxis_contable:
     resource: "@ArxisContableBundle/Resources/config/routing.yml"
+    prefix:   /
+multiservices_task:
+    resource: "@TaskBundle/Resources/config/routing.yml"
     prefix:   /    
 hwi_oauth_redirect:
     resource: "@HWIOAuthBundle/Resources/config/routing/redirect.xml"
