@@ -2,6 +2,3 @@ arxis_contable_contacto:
     resource: "@ArxisContableBundle/Resources/config/routing/contacto.yml"
 arxis_contable_clientes:
         resource: "@ArxisContableBundle/Resources/config/routing/cliente.yml"
-arxis_contable_homepage:
-    path:     /
-    defaults: { _controller: ArxisContableBundle:Default:index }
