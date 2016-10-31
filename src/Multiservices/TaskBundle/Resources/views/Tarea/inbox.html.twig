@@ -1,0 +1,50 @@
+<script>
+        function abrir_tarea(url,action){
+        $("#activity").next().hide();
+        url=encodeURI(url);
+        window.location.hash=url;
+        }
+</script> 
+<ul class="notification-body">
+    {%for tarea in entities %}
+        {%if tarea.state=='Creada'%}
+                {% set pr='10%' %}
+                {% set epr= pr%}
+                {% set prtext='text-danger' %}
+                {% set pb='progress-bar-danger' %}
+            {%elseif tarea.state=='Pendiente'%}
+                {% set pr='50%' %}
+                {% set epr= pr%}
+                {% set prtext='text-muted' %}
+                {% set pb='progress-color-teal' %}
+            {%elseif tarea.state=='Finalizada'%}
+                {% set pr='100%' %}
+                {% set epr%}
+                    <i class="fa fa-check text-success"></i>Completada
+                {%endset%}
+                {% set prtext='text-muted' %}
+                {% set pb='progress-bar-success' %}
+            {%else%}
+                {% set pr='0%' %}
+                {% set epr= pr%}
+                {% set prtext='text-muted' %}
+                {% set pb='progress-bar-danger' %}
+         {%endif%}
+         {#progress-micro(MINOR) progress-md(PRM) progress-sm(NORMAL) progress-xs#}
+	<li>
+                    <span class="{{ tarea.isread ? '': 'unread' }}">
+                        <a class="" href="javascript:abrir_tarea('{{path('tarea_show',{'id':tarea.id})}}');" >
+                            <div class="bar-holder no-padding">
+				<p class="margin-bottom-5">{% if tarea.isurgent%}<i class="fa fa-warning text-warning"></i>{% endif %} <strong>PRIORIDAD:</strong> <i>{{tarea.tarea}}</i> <span class="pull-right semi-bold {{prtext}}">{{epr}}</span></p>
+				<div class="progress progress-sm progress-striped">
+					<div class="progress-bar {{pb}}"  style="width: {{pr}};"></div>
+				</div>
+				<em class="note no-margin">ultima actualización {{'now'|date()}}</em>
+                              {#  <em class="note no-margin display-inline"><a href="javascript:void(0);">ver notas</a></em>
+                                {{tarea.state|readablehtml('StateTaskType')|raw}}#}
+                            </div>
+                        </a>
+                    </span>
+	</li>
+      {%endfor%}  
+</ul>

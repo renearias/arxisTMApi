@@ -1,0 +1,86 @@
+{% block content -%}
+<div id="content">
+    <div class="row">
+        <big-breadcrumbs items="['Tarea', 'Mostrar']" icon="file"
+                         class="col-xs-12 col-sm-7 col-md-7 col-lg-4"></big-breadcrumbs>
+        <div smart-include="{{path('layout-sub-header')}}"></div>
+    </div>
+    <div class="row">
+
+    <table class="table record_properties">
+        <tbody>
+            <tr>
+                <th>Codigo</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Tarea</th>
+                <td>{{ entity.tarea }}</td>
+            </tr>
+            <tr>
+                <th>Descripcion</th>
+                <td>{{ entity.descripcion }}</td>
+            </tr>
+            
+            <tr>
+                <th>Creada a las</th>
+                <td>{{ entity.created|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Creada por</th>
+                <td>{{ entity.createdby }}</td>
+            </tr>
+            <tr>
+                <th>Asignada a</th>
+                <td>{{ entity.assignedto }}</td>
+            </tr>
+            
+            <tr>
+                <th>Estado</th>
+                <td>{{ entity.state|readablehtml('StateTaskType')|raw }}</td>
+            </tr>
+           
+            {% if entity.casos %}
+                <tr>
+                <th>Casos Relacionados</th>
+                <td>
+                    <ul>
+                    {%for caso in entity.casos %}
+                    <li><a href="{{path("casos_show",{'id':caso.id})}}">{{caso}}</a></li>
+                    {%else%}
+                    <li>NO HAY CASOS RELACIONADOS CON ESTA TAREA</li>
+                    {%endfor%}
+                    </ul>
+                </td>
+            </tr>
+            {% endif%}    
+            {% if entity.state=='Finalizada'%}
+            <tr>
+                <th>Finalizado por</th>
+                <td>{{ entity.finishby }}</td>
+            </tr>
+            <tr>
+                <th>Terminada a las</th>
+                <td>{{ entity.finished|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            {% endif %}
+        </tbody>
+    </table>
+    </div>
+    <div class="row">
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('tarea') }}">
+            Regresar a la lista
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('tarea_edit', { 'id': entity.id }) }}">
+            Editar
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,7 @@
+task_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: TaskBundle:Default:index }
+TaskBundleAnnotations:
+   resource: "@TaskBundle/Controller/"
+   type:     annotation
+   prefix:   /

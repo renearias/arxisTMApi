@@ -1,0 +1,57 @@
+{% extends app.request.isXmlHttpRequest ? '::baseajaxforms.html.twig' : 'MultiservicesArxisBundle::layoutsmart.html.twig' %}
+
+{% block content -%}
+    <h1>Tasktemplate lista</h1>
+
+    <table class="table records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Tarea</th>
+                <th>Descripcion</th>
+                <th>Createby</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="#{{ path('tasktemplate_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.tarea }}</td>
+                <td>{{ entity.descripcion }}</td>
+                <td>{{ entity.createby }}</td>
+                <td>
+                <ul>                    
+                    
+                    
+                    
+                    
+                                                                                                            
+                                             
+                    <li>
+                        <a href="#{{ path('tasktemplate_show', { 'id': entity.id }) }}">mostrar</a>
+                    </li>                    
+                    
+                    
+                    
+                    
+                                                                                                            
+                                             
+                    <li>
+                        <a href="#{{ path('tasktemplate_edit', { 'id': entity.id }) }}">editar</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="#{{ path('tasktemplate_new') }}">
+                Crear nueva entrada
+            </a>
+        </li>
+    </ul>
+    {% endblock %}

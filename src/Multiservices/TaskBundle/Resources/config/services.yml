@@ -1,0 +1,13 @@
+services:
+#    task.example:
+#        class: Multiservices\TaskBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]
+   
+    lex_datatables.tarea:
+        class: Multiservices\TaskBundle\Datatables\TareaDatatable
+        tags:
+            - { name: sg.datatable.view }        
+    lex_datatables.contactos:
+        class: Multiservices\TaskBundle\Datatables\ContactosDatatable
+        tags:
+            - { name: sg.datatable.view }    

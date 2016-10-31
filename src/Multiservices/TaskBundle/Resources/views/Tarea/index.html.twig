@@ -1,0 +1,26 @@
+{% block content -%}
+<div id="content">
+    <div class="row">
+        <big-breadcrumbs items="['Tarea', 'Resumen']" icon="file"
+                         class="col-xs-12 col-sm-7 col-md-7 col-lg-4"></big-breadcrumbs>
+        <div smart-include="{{path('layout-sub-header')}}"></div>
+    </div>
+    <div class="row">
+
+    
+    {{ datatable_render_html(datatable) }}
+    
+    </div>
+    <div class="row">    
+        <ul>
+        <li>
+            <a href="{{ path('tarea_new') }}">
+                Crear nueva entrada
+            </a>
+        </li>
+    </ul>
+        </div>
+                
+</div>  
+{{ datatable_render_js(datatable) }}
+{% endblock %}

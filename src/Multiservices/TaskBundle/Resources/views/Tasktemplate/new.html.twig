@@ -1,0 +1,15 @@
+{% extends app.request.isXmlHttpRequest ? '::baseajaxforms.html.twig' : 'MultiservicesArxisBundle::layoutsmart.html.twig' %}
+
+{% block content -%}
+    <h1>Tasktemplate creacion</h1>
+
+    {{ form(form) }}
+
+        <ul class="record_actions">
+    <li>
+        <a href="#{{ path('tasktemplate') }}">
+            Regresar a la lista
+        </a>
+    </li>
+</ul>
+{% endblock %}

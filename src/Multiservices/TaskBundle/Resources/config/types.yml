@@ -1,0 +1,5 @@
+doctrine:
+    dbal:
+       types:
+          
+           StateTaskType: Multiservices\TaskBundle\Form\Type\StateTaskType  
