@@ -1,0 +1,42 @@
+default:
+    suites:
+        default:
+            type: symfony_bundle
+            bundle: AppBundle
+            contexts:
+                - FeatureContext:
+                    doctrine: "@doctrine"
+                - AppBundle\Features\Context\RestApiContext:
+                    client: "@csa_guzzle.client.local_test_api"
+                    dummyDataPath: "%paths.base%/features/Dummy/"
+                - AppBundle\Features\Context\UserSetupContext:
+                    userManager: "@fos_user.user_manager"
+                    em: "@doctrine.orm.entity_manager"
+        paypay:
+            type: symfony_bundle
+            bundle: PayPayBundle
+            contexts:
+                - FeatureContext:
+                    doctrine: "@doctrine"
+                - AppBundle\Features\Context\RestApiContext:
+                    client: "@csa_guzzle.client.local_test_api"
+                    dummyDataPath: "%paths.base%/features/Dummy/"
+                - AppBundle\Features\Context\UserSetupContext:
+                    userManager: "@fos_user.user_manager"
+                    em: "@doctrine.orm.entity_manager"
+                - Multiservices\PayPayBundle\Features\Context\IngresosContext:
+                    userManager: "@fos_user.user_manager"
+                    em: "@doctrine.orm.entity_manager"    
+                - Multiservices\PayPayBundle\Features\Context\FormasPagoContext:
+                    em: "@doctrine.orm.entity_manager"                   
+    extensions:
+        Behat\Symfony2Extension:
+            kernel:
+                env: "acceptance"
+                debug: "true"
+
+        Behat\MinkExtension:
+            base_url: "http://imperya/app_acceptance.php/"
+            sessions:
+                defaults:
+                    symfony2: ~
