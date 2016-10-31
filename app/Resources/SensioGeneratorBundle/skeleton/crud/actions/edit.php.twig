@@ -1,0 +1,83 @@
+
+    /**
+{% block phpdoc_method_header %}
+     * Replaces an existing {{ entity }} entity.
+{% endblock phpdoc_method_header %}
+     *
+{% block phpdoc_method_annotations %}
+{% if 'annotation' == format %}
+     * @Route("/{id}/edit", name="{{ route_name_prefix }}_edit")
+     * @Method({"GET", "POST"})
+{% endif %}
+     * @ApiDoc(
+     *   resource = true,
+     *   input = {
+     *              "class"= "{{ namespace }}\Form\{{ entity }}Type",
+     *              "name"= ""
+     *            },
+     *   output = "{{ namespace }}\Entity\{{ entity_class }}",
+     *   section="{{ entity }}",
+     *    statusCodes = {
+     *      201="Retorna cuando {{ entity }} ha sido creado exitosamente",
+     *      204="Retorna cuando un existente {{ entity }} ha sido actualizado exitosamente",
+     *      400="Retorna cuando la data del formulario es invalida"
+     *   }
+     * )
+     * @Rest\View()
+     * @param Request $request
+     * @param integer $id
+     * @return FormTypeInterface[]|\FOS\RestBundle\View\View|null
+{% endblock phpdoc_method_annotations %}
+     */
+{% block method_definition %}
+    public function putAction(Request $request, $id)
+{% endblock method_definition %}
+    {
+{% block method_body %}
+{#        $deleteForm = $this->createDeleteForm(${{ entity_singularized }});
+        $editForm = $this->createForm('{{ namespace }}\Form\{{ entity_class }}Type', ${{ entity_singularized }});
+        $editForm->handleRequest($request);#}
+        $em = $this->getDoctrine()->getManager();
+        ${{ entity_singularized }} = $em->getRepository('{{ bundle }}:{{ entity }}')->find($id);
+{#       ${{ entity_singularized }}=$this->getHandler()->get(${{ entity_singularized }});
+        if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist(${{ entity_singularized }});
+            $em->flush();
+
+            return $this->redirectToRoute('{{ route_name_prefix }}', array('page' => ${{ entity_singularized }}->getId().'/edit'));
+        }#}
+{% endblock method_body %}
+
+{% block method_return %}
+        try {
+            if (${{ entity_singularized }} === null) {
+                $statusCode = Response::HTTP_CREATED;
+                ${{ entity_singularized }} = $this->getHandler()->post(
+                    new {{ entity_class }}(),
+                    $request->request->all()
+                );
+            } else {
+                $statusCode = Response::HTTP_NO_CONTENT;
+                ${{ entity_singularized }} = $this->getHandler()->put(
+                    ${{ entity_singularized }},
+                    $request->request->all()
+                );
+            }
+            $routeOptions = array(
+                '{{ entity_singularized }}'        => ${{ entity_singularized }}->getId(),
+                '_format'   => $request->get('_format')
+            );
+            return $this->routeRedirectView('get_{{ entity_singularized }}', $routeOptions, $statusCode);
+        } catch (InvalidFormException $e) {
+            return $e->getForm();
+        }
+{#        $view = $this->view($edit_form, Response::HTTP_BAD_REQUEST)
+            ->setTemplate('{{ entity|lower|replace({'\\': '/'}) }}/edit.html.twig')
+            ->setTemplateData([
+                            'edit_form' => $editForm->createView(),
+                            'delete_form' => $deleteForm->createView(),
+                             ]);
+        return $this->handleView($view);#}
+{% endblock method_return %}
+    }

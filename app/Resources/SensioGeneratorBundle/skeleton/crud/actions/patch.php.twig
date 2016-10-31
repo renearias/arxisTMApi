@@ -1,0 +1,62 @@
+
+    /**
+{% block phpdoc_method_header %}
+     * Updates an existing {{ entity }} entity.
+{% endblock phpdoc_method_header %}
+     *
+{% block phpdoc_method_annotations %}
+{% if 'annotation' == format %}
+     * @Route("/{id}/edit", name="{{ route_name_prefix }}_edit")
+     * @Method({"GET", "POST"})
+{% endif %}
+     * @ApiDoc(
+     *   resource = true,
+     *   input = {
+     *              "class"= "{{ namespace }}\Form\{{ entity }}Type",
+     *              "name"= ""
+     *            },
+     *   output = "{{ namespace }}\Entity\{{ entity_class }}",
+     *   section="{{ entity }}",
+     *    statusCodes = {
+     *      204="Returned when an existing {{ entity }} has been successfully updated",
+     *      400="Returned when the posted data is invalid",
+     *      404="Returned when trying to update a non existent {{ entity }}"
+     *   }
+     * )
+     * @Rest\View()
+     * @param Request $request
+     * @param {{ entity_class }} ${{ entity_singularized }}
+     * @return FormTypeInterface[]|\FOS\RestBundle\View\View|null
+{% endblock phpdoc_method_annotations %}
+     */
+{% block method_definition %}
+    public function patchAction(Request $request, {{ entity_class }} ${{ entity_singularized }})
+{% endblock method_definition %}
+    {
+{% block method_body %}
+        
+{% endblock method_body %}
+
+{% block method_return %}
+        try {
+            ${{ entity_singularized }} = $this->getHandler()->patch(
+                ${{ entity_singularized }},
+                $request->request->all()
+            );
+            $routeOptions = array(
+                '{{ entity_singularized }}'        => ${{ entity_singularized }}->getId(),
+                '_format'   => $request->get('_format')
+            );
+            return $this->routeRedirectView('get_{{ entity_singularized }}', $routeOptions, Response::HTTP_NO_CONTENT);
+        } catch (InvalidFormException $e) {
+            return $e->getForm();
+        }
+{#        $view = $this->view($edit_form, Response::HTTP_BAD_REQUEST)
+            ->setTemplate('{{ entity|lower|replace({'\\': '/'}) }}/edit.html.twig')
+            ->setTemplateData([
+                            'edit_form' => $editForm->createView(),
+                            'delete_form' => $deleteForm->createView(),
+                             ]);
+        return $this->handleView($view);#}
+{% endblock method_return %}
+    }

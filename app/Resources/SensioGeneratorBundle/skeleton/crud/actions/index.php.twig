@@ -1,0 +1,45 @@
+    /**
+{% block phpdoc_method_header %}
+     * Lists all {{ entity }} entities.
+{% endblock phpdoc_method_header %}
+     *
+{% block phpdoc_method_annotations %}
+{% if 'annotation' == format %}
+     * @Route("/", name="{{ route_name_prefix }}_index")
+     * @Method("GET")
+{% endif %}
+{% endblock phpdoc_method_annotations %}
+     * @ApiDoc(
+     *   resource = true,
+     *   section="{{ entity }}",
+     *   statusCodes = {
+     *     200 = "Returned when successful",
+     *     404 = "Returned when not found"
+     *   }
+     * )
+     *
+     * @Rest\View()
+     *
+     */
+{% block method_definition %}
+    public function cgetAction()
+{% endblock method_definition %}
+    {
+{% block method_body %}
+        $em = $this->getDoctrine()->getManager();
+
+        ${{ entity_pluralized }} = $em->getRepository('{{ bundle }}:{{ entity }}')->findAll();
+
+        //${{ entity_pluralized }}_datatable = $this->get("{{ bundle|lower }}_datatable.{{ entity_pluralized }}");
+        //${{ entity_pluralized }}_datatable->buildDatatable();
+{% endblock method_body %}
+
+{% block method_return %}
+        $view = $this->view(${{ entity_pluralized }})
+            ->setTemplate('{{ entity|lower|replace({'\\': '/'}) }}/index.html.twig')
+            ->setTemplateData([
+                            '{{ entity_pluralized }}' => ${{ entity_pluralized }}
+                             ]);
+        return ${{ entity_pluralized }};
+{% endblock method_return %}
+    }

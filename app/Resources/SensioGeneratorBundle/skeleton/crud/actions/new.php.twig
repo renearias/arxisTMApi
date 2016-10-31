@@ -1,0 +1,83 @@
+
+    /**
+{% block phpdoc_method_header %}
+     * Crea una nueva {{ entity }} entidad.
+{% endblock phpdoc_method_header %}
+     *
+{% block phpdoc_method_annotations %}
+{% if 'annotation' == format %}
+     * @Route("/new", name="{{ route_name_prefix }}_new")
+     * @Method({"GET", "POST"})
+{% endif %}
+     * @ApiDoc(
+     *   resource = true,
+     *   section="{{ entity }}",
+     *   input = {
+     *              "class"= "{{ namespace }}\Form\{{ entity }}Type",
+     *              "name"= ""
+     *            },
+     *   output = "{{ namespace }}\Entity\{{ entity_class }}",
+     *    statusCodes = {
+     *      201 = "Retorna cuando se crea un nuevo {{ entity }}",
+     *      400 = "Returna cuando el formulario contiene errores" 
+     *   }
+     * )
+     * @Rest\View(
+     *   template = "{{ entity|lower|replace({'\\': '/'}) }}/new.html.twig",
+     *   statusCode = Response::HTTP_BAD_REQUEST
+     * )
+     *
+     * @param Request $request the request object
+     *
+     * @return FormTypeInterface[]|View
+{% endblock phpdoc_method_annotations %}
+     */
+{% block method_definition %}
+    public function postAction(Request $request)
+{% endblock method_definition %}
+    {
+{% block method_body %}
+{#        ${{ entity_singularized }} = new {{ entity_class }}();
+        $form = $this->createForm('{{ namespace }}\Form\{{ entity_class }}Type', ${{ entity_singularized }});
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist(${{ entity_singularized }});
+            $em->flush();
+
+            {% if 'show' in actions -%}
+                return $this->redirectToRoute('{{ route_name_prefix }}', array('get_{{ entity_singularized }}' => ${{ entity_singularized }}->getId()));
+            {%- else -%}
+                return $this->redirectToRoute('{{ route_name_prefix }}'));
+            {%- endif %}
+
+        }#}
+{% endblock method_body %}
+
+{% block method_return %}
+        try {
+            ${{ entity_singularized }} = $this->getHandler()->post(
+                new {{ entity_class }}(),
+                $request->request->all()
+            );
+            $routeOptions = array(
+                //'{{ entity_singularized }}'        => ${{ entity_singularized }}->getId(),
+                'id'        => ${{ entity_singularized }}->getId(),
+                //'_format'    => $request->get('_format'),
+            );
+            return $this->handleView($this->view($routeOptions, Response::HTTP_CREATED));
+            /*return $this->routeRedirectView(
+                'get_{{ entity_singularized }}',
+                $routeOptions,
+                Response::HTTP_CREATED
+            );*/
+        } catch (InvalidFormException $e) {
+            return $e->getForm();
+        }
+{#       $view = $this->view($form, Response::HTTP_BAD_REQUEST)
+            ->setTemplate('{{ entity|lower|replace({'\\': '/'}) }}/new.html.twig')
+            ->setTemplateData(['form'=>$form->createView()]);
+        return $this->handleView($view);#}
+{% endblock method_return %}
+    }

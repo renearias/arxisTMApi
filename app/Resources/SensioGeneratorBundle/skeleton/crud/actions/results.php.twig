@@ -1,0 +1,43 @@
+
+    /**
+{% block phpdoc_method_header %}
+     * Get results from {{ entity }} entity.
+{% endblock phpdoc_method_header %}
+     *
+{% block phpdoc_method_annotations %}
+{% if 'annotation' == format %}
+     * @Route("/results", name="{{ route_name_prefix }}_results")
+     * @Method({"GET", "POST"})
+{% endif %}
+{% endblock phpdoc_method_annotations %}
+     * @ApiDoc(
+     *   resource = true,
+     *   section="{{ entity }}",
+     *   filters={
+     *      {"name"="search[value]", "dataType"="string", "default"="", "required":true},
+     *      {"name"="draw", "dataType"="integer"}
+     *   },
+     *   statusCodes = {
+     *     200 = "Returned when successful",
+     *     404 = "Returned when not found"
+     *   }
+     * )
+     *
+     * @Rest\View()
+     *
+     */
+{% block method_definition %}
+    public function resultsAction(Request $request)
+{% endblock method_definition %}
+    {
+{% block method_body %}
+
+        $datatable = $this->get('{{ bundle|lower }}_datatable.{{ entity_pluralized }}');
+        $datatable->buildDatatable();
+        $query = $this->get('sg_datatables.query')->getQueryFrom($datatable);
+{% endblock method_body %}
+
+{% block method_return %}
+        return $query->getResponse();
+{% endblock method_return %}
+    }

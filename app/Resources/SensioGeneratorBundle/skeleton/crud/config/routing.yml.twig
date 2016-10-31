@@ -1,0 +1,57 @@
+#para rutas front
+{{ route_name_prefix }}:
+    path:      /{{ route_name_prefix }}/{page}
+    defaults:  { _controller: AppBundle:Default:inicio, page: index }
+    requirements:
+        page: \d+|new
+    options:
+        expose: true
+#rutas del back o api         
+{{ route_name_prefix }}_api:
+    type: rest
+    resource: "@{{ bundle }}/Controller/{{ entity }}Controller.php"
+    options:
+        expose: true
+    prefix: api 
+{{ route_name_prefix }}_results:
+    path:     /{{ route_name_prefix }}/results
+    defaults: { _controller: "{{ bundle }}:{{ entity }}:results" }
+    methods:  [GET, POST]
+{#{% if 'index' in actions %}
+{{ route_name_prefix }}_index:
+    path:     /
+    defaults: { _controller: "{{ bundle }}:{{ entity }}:index" }
+    methods:  GET
+{% endif %}
+
+{% if 'show' in actions %}
+{{ route_name_prefix }}_show:
+    path:     /{id}/show
+    defaults: { _controller: "{{ bundle }}:{{ entity }}:show" }
+    methods:  GET
+{% endif %}
+
+{% if 'new' in actions %}
+{{ route_name_prefix }}_new:
+    path:     /new
+    defaults: { _controller: "{{ bundle }}:{{ entity }}:new" }
+    methods:  [GET, POST]
+{% endif %}
+#}
+{% if 'edit' in actions %}
+{{ route_name_prefix }}_edit:
+    path:     /{{ route_name_prefix }}/{page}/edit
+{#    defaults: { _controller: "{{ bundle }}:{{ entity }}:edit" }#}
+    defaults:  { _controller: AppBundle:Default:inicio, page: index }
+    methods:  [GET, POST]
+    options:
+        expose: true
+{% endif %}
+{#
+{% if 'delete' in actions %}
+{{ route_name_prefix }}_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "{{ bundle }}:{{ entity }}:delete" }
+    methods:  DELETE
+{% endif %}
+#}

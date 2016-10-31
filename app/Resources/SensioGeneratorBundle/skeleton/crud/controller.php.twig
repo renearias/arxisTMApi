@@ -1,0 +1,76 @@
+<?php
+
+namespace {{ namespace }}\Controller{{ entity_namespace ? '\\' ~ entity_namespace : '' }};
+
+{% block use_statements %}
+{% if 'new' in actions or 'edit' in actions or 'delete' in actions %}
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+{%- endif %}
+
+{% if 'annotation' == format -%}
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+{%- endif %}
+use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\RestBundle\Routing\ClassResourceInterface;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use AppBundle\Exception\InvalidFormException;
+use {{ namespace }}\Entity\{{ entity }};
+{% if 'new' in actions or 'edit' in actions %}
+use {{ namespace }}\Form\{{ entity }}Type;
+{% endif %}
+{% endblock use_statements %}
+
+/**
+{% block phpdoc_class_header %}
+ * {{ entity }} controller.
+{% endblock phpdoc_class_header %}
+ *
+{% block phpdoc_class_annotations %}
+{% if 'annotation' == format %}
+ * @Route("/{{ route_prefix }}")
+{% endif %}
+* @Rest\RouteResource("{{ entity_singularized|lower }}")
+{% endblock phpdoc_class_annotations %}
+ */
+{% block class_definition %}
+class {{ entity_class }}Controller extends FOSRestController implements ClassResourceInterface
+{% endblock class_definition %}
+{
+{% block class_body %}
+    {%- if 'index' in actions %}
+        {%- include 'crud/actions/index.php.twig' %}
+    {%- endif %}
+    
+    {%- include 'crud/actions/results.php.twig' %}
+    
+    {%- if 'new' in actions %}
+        {%- include 'crud/actions/new.php.twig' %}
+    {%- endif %}
+    
+    {%- if 'show' in actions %}
+        {%- include 'crud/actions/show.php.twig' %}
+    {%- endif %}
+
+    {%- if 'edit' in actions %}
+        {%- include 'crud/actions/edit.php.twig' %}
+        {%- include 'crud/actions/patch.php.twig' %}
+    {%- endif %}
+
+    {%- if 'delete' in actions %}
+        {%- include 'crud/actions/delete.php.twig' %}
+    {%- endif %}
+    
+    /**
+     * Returns the required handler for this controller
+     *
+     * @return \AppBundle\Form\FormHandler
+     */
+    private function getHandler()
+    {
+        return $this->get('{{ bundle|lower }}.form.handler.{{entity|lower}}');
+    }
+{% endblock class_body %}
+}
