@@ -99,7 +99,7 @@
                 "aws_secret_access_key": "AWS_SECRET_ACCESS_KEY",
                 "s3_bucket": "S3_BUCKET",
                 "aws_url": "AWS_URL"
-            }
+            },
         "branch-alias": null
     }
 }
