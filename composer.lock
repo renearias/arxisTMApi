@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8c3ad496a66a0e61d1a71d35312d5819",
-    "content-hash": "bc4972bff943e719dd7660469020ee41",
+    "hash": "b5ef7609bfb1dd1d1f0a5f1e84bb4eca",
+    "content-hash": "cfa5675319040af6ceab90a6d1c7160e",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -878,16 +878,16 @@
         },
         {
             "name": "fresh/doctrine-enum-bundle",
-            "version": "v4.7.0",
+            "version": "v4.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fre5h/DoctrineEnumBundle.git",
-                "reference": "9ab680e476d2edc1e56e92c7f7d1a3ad2d84c8f7"
+                "reference": "8fa39d1ade7618a33bcdaaa30e1baff4761130e2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fre5h/DoctrineEnumBundle/zipball/9ab680e476d2edc1e56e92c7f7d1a3ad2d84c8f7",
-                "reference": "9ab680e476d2edc1e56e92c7f7d1a3ad2d84c8f7",
+                "url": "https://api.github.com/repos/fre5h/DoctrineEnumBundle/zipball/8fa39d1ade7618a33bcdaaa30e1baff4761130e2",
+                "reference": "8fa39d1ade7618a33bcdaaa30e1baff4761130e2",
                 "shasum": ""
             },
             "require": {
@@ -901,7 +901,7 @@
                 "symfony/framework-bundle": "~2.6|~3.0",
                 "symfony/http-kernel": "~2.6|~3.0",
                 "symfony/validator": "~2.6|~3.0",
-                "twig/twig": "~1.13"
+                "twig/twig": "~1.26"
             },
             "require-dev": {
                 "escapestudios/symfony2-coding-standard": "~2.9",
@@ -953,7 +953,7 @@
                 "symfony",
                 "type"
             ],
-            "time": "2016-10-08 15:07:22"
+            "time": "2016-10-31 21:50:21"
         },
         {
             "name": "friendsofsymfony/jsrouting-bundle",
@@ -4177,6 +4177,50 @@
                 "transliterator"
             ],
             "time": "2015-09-28 16:26:35"
+        },
+        {
+            "name": "heroku/heroku-buildpack-php",
+            "version": "v113",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/heroku/heroku-buildpack-php.git",
+                "reference": "af7089595b889690df2594044c8626068178f739"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/heroku/heroku-buildpack-php/zipball/af7089595b889690df2594044c8626068178f739",
+                "reference": "af7089595b889690df2594044c8626068178f739",
+                "shasum": ""
+            },
+            "bin": [
+                "bin/heroku-hhvm-apache2",
+                "bin/heroku-hhvm-nginx",
+                "bin/heroku-php-apache2",
+                "bin/heroku-php-nginx"
+            ],
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "David Zuelke",
+                    "email": "dz@heroku.com"
+                }
+            ],
+            "description": "Toolkit for starting a PHP application locally, with or without foreman, using the same config for PHP/HHVM and Apache2/Nginx as on Heroku",
+            "homepage": "https://github.com/heroku/heroku-buildpack-php",
+            "keywords": [
+                "apache",
+                "apache2",
+                "foreman",
+                "heroku",
+                "hhvm",
+                "nginx",
+                "php"
+            ],
+            "time": "2016-10-19 23:42:40"
         },
         {
             "name": "myclabs/deep-copy",
