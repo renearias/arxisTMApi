@@ -43,6 +43,7 @@
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
         "symfony/phpunit-bridge": "^3.0",
+        "heroku/heroku-buildpack-php": "*",
         
         "phpspec/phpspec": "^2.4",
         "phpunit/phpunit": "^5.1",
@@ -77,6 +78,28 @@
         "incenteev-parameters": {
             "file": "app/config/parameters.yml"
         },
+        "env-map": {
+                "database_host": "DATABASE_HOST",
+                "database_name": "DATABASE_NAME",
+                "database_user": "DATABASE_USER",
+                "database_password": "DATABASE_PASS",
+                "database_port": "DATABASE_PORT",
+                "mailer_transport": "MAILER_TRANSPORT",
+                "mailer_host": "MAILER_HOST",
+                "mailer_user": "MAILER_USER",
+                "mailer_password": "MAILER_PASSWORD",
+                "mailer_port": "MAILER_PORT",
+                "mailer_encryption": "MAILER_ENCRYPTION",
+                "mailgun_key": "MAILGUN_KEY",
+                "secret": "SECRET",
+                "oauth_client": "OAUTH_CLIENT",
+                "oauth_secret": "OAUTH_SECRET",
+                "website_back_base_url": "WEBSITE_BACK_URL",
+                "aws_access_key_id": "AWS_ACCESS_KEY_ID",
+                "aws_secret_access_key": "AWS_SECRET_ACCESS_KEY",
+                "s3_bucket": "S3_BUCKET",
+                "aws_url": "AWS_URL"
+            }
         "branch-alias": null
     }
 }
