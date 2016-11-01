@@ -3,10 +3,9 @@ services:
 #        class: Multiservices\TaskBundle\Example
 #        arguments: [@service_id, "plain_value", %parameter%]
    
-    lex_datatables.tarea:
+    taskbundle_datatable.tareas:
         class: Multiservices\TaskBundle\Datatables\TareaDatatable
-        tags:
-            - { name: sg.datatable.view }        
+        parent: sg_datatables.datatable.abstract 
     taskbundle.form.handler.tarea:
         class: AppBundle\Form\Handler\FormHandler
         arguments: ["@doctrine.orm.entity_manager","@form.factory","@taskbundle.form.tareatype"]
