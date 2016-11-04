@@ -68,6 +68,21 @@ class Tarea
     private $descripcion;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="task_type", type="text",length=50, nullable=false)
+     */
+    private $task_type;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="expired_date", type="datetime")
+     */
+
+    private $expired_date;
+
+    /**
      * @var \AppBundle\Entity\Usuario
      *
      * @ORM\ManyToOne(targetEntity="\AppBundle\Entity\Usuario")
@@ -200,6 +215,38 @@ class Tarea
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getExpiredDate()
+    {
+        return $this->expired_date;
+    }
+
+    /**
+     * @param \DateTime $expired_date
+     */
+    public function setExpiredDate($expired_date)
+    {
+        $this->expired_date = $expired_date;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTaskType()
+    {
+        return $this->task_type;
+    }
+
+    /**
+     * @param string $task_type
+     */
+    public function setTaskType($task_type)
+    {
+        $this->task_type = $task_type;
     }
 
     /**
