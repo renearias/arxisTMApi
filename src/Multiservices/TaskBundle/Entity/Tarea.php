@@ -70,9 +70,9 @@ class Tarea
     /**
      * @var string
      *
-     * @ORM\Column(name="task_type", type="text",length=50, nullable=false)
+     * @ORM\Column(name="type", type="text",length=50, nullable=false)
      */
-    private $task_type;
+    private $type;
 
     /**
      * @var \DateTime
@@ -174,11 +174,11 @@ class Tarea
     /**
      * 
      * @Serializer\Expose()
-     * @Serializer\SerializedName("type")
-     * @Serializer\Accessor(getter="getType")
+     * @Serializer\SerializedName("class")
+     * @Serializer\Accessor(getter="getClass")
      */
-    private $type;
-    public function getType(){
+    private $class;
+    public function getClass(){
         if ($this->getStatus()=='URGENTE')
         {return 'progress progress-md progress-striped';}
         else
@@ -236,19 +236,20 @@ class Tarea
     /**
      * @return string
      */
-    public function getTaskType()
+    public function getType()
     {
-        return $this->task_type;
+        return $this->type;
     }
 
     /**
-     * @param string $task_type
+     * @param string $type
      */
-    public function setTaskType($task_type)
+    public function setType($type)
     {
-        $this->task_type = $task_type;
+        $this->type = $type;
     }
 
+ 
     /**
      * @return Tarea
      */
