@@ -68,10 +68,9 @@ class Tarea
     private $descripcion;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="type", type="text",length=50, nullable=false)
-     */
+     * @ORM\ManyToOne(targetEntity="TaskType")
+     * @ORM\JoinColumn(name="type", referencedColumnName="id")
+     **/
     private $type;
 
     /**
@@ -234,7 +233,9 @@ class Tarea
     }
 
     /**
-     * @return string
+     * Get type
+     *
+     * @return \Multiservices\TaskBundle\Entity\TaskType
      */
     public function getType()
     {
@@ -244,12 +245,12 @@ class Tarea
     /**
      * @param string $type
      */
-    public function setType($type)
+    public function setType(\Multiservices\TaskBundle\Entity\TaskType $type)
     {
         $this->type = $type;
     }
 
- 
+
     /**
      * @return Tarea
      */

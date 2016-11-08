@@ -50,7 +50,8 @@
         "behat/behat": "dev-master",
         "behat/mink": "^1.7",
         "behat/mink-extension": "^2.2",
-        "behat/symfony2-extension": "^2.1"
+        "behat/symfony2-extension": "^2.1",
+        "doctrine/doctrine-fixtures-bundle": "^2.3"
     },
     "scripts": {
         "symfony-scripts": [
