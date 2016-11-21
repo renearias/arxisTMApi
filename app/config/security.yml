@@ -80,6 +80,7 @@ security:
     access_control:
         - { path: ^/$, role: IS_AUTHENTICATED_FULLY }
         - { path: ^/api, roles: [ IS_AUTHENTICATED_FULLY ] }
+        - { path: ^/hola, roles: [ IS_AUTHENTICATED_ANONYMOUSLY ] }
         - { path: ^/doc, roles: [ IS_AUTHENTICATED_ANONYMOUSLY ] }
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/connect$, role: IS_AUTHENTICATED_ANONYMOUSLY }
