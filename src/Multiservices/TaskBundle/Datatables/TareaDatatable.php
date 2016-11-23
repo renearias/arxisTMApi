@@ -86,33 +86,42 @@ class TareaDatatable extends AbstractDatatableView
         $this->columnBuilder
             ->add('id', 'column', array(
                 'title' => 'Id',
+                'name' => 'id'
             ))
             ->add('tarea', 'column', array(
                 'title' => 'Tarea',
-            ))
-            ->add('descripcion', 'column', array(
-                'title' => 'Descripcion',
+                'name' => 'tarea'
             ))
             ->add('created', 'datetime', array(
                 'title' => 'Created',
             ))
-            ->add('finished', 'datetime', array(
-                'title' => 'Finished',
+            ->add('assignedto.name', 'column', array(
+                'title' => 'Assignedto Name',
+            ))    
+            ->add('descripcion', 'column', array(
+                'title' => 'Descripcion',
+                'name' => 'descripcion'
             ))
             ->add('isurgent', 'boolean', array(
                 'title' => 'Isurgent',
             ))
-            ->add('isread', 'boolean', array(
-                'title' => 'Isread',
+            ->add('state', 'column', array(
+                'title' => 'State',
             ))
+            ->add('finished', 'datetime', array(
+                'title' => 'Finished',
+            ))
+            ->add('assignedto.id', 'column', array(
+                'title' => 'Assignedto Id',
+            ))
+            /*->add('isread', 'boolean', array(
+                'title' => 'Isread',
+            ))*/
             ->add('timeEstimate', 'column', array(
                 'title' => 'TimeEstimate',
             ))
             ->add('priority', 'column', array(
                 'title' => 'Priority',
-            ))
-            ->add('state', 'column', array(
-                'title' => 'State',
             ))
             /*->add('parent.id', 'column', array(
                 'title' => 'Parent Id',
@@ -189,27 +198,6 @@ class TareaDatatable extends AbstractDatatableView
             ->add('assignedto.trato', 'column', array(
                 'title' => 'Assignedto Trato',
             ))
-            ->add('assignedto.path', 'column', array(
-                'title' => 'Assignedto Path',
-            ))
-            ->add('assignedto.telefono', 'column', array(
-                'title' => 'Assignedto Telefono',
-            ))
-            ->add('assignedto.direccion', 'column', array(
-                'title' => 'Assignedto Direccion',
-            ))
-            ->add('assignedto.created', 'column', array(
-                'title' => 'Assignedto Created',
-            ))
-            ->add('assignedto.facebookId', 'column', array(
-                'title' => 'Assignedto FacebookId',
-            ))
-            ->add('assignedto.facebookAccessToken', 'column', array(
-                'title' => 'Assignedto FacebookAccessToken',
-            ))
-            ->add('assignedto.data', 'column', array(
-                'title' => 'Assignedto Data',
-            ))*/
             ->add('finishby.id', 'column', array(
                 'title' => 'Finishby Id',
             ))
@@ -221,27 +209,6 @@ class TareaDatatable extends AbstractDatatableView
             ))
             ->add('finishby.trato', 'column', array(
                 'title' => 'Finishby Trato',
-            ))
-            ->add('finishby.path', 'column', array(
-                'title' => 'Finishby Path',
-            ))
-            ->add('finishby.telefono', 'column', array(
-                'title' => 'Finishby Telefono',
-            ))
-            ->add('finishby.direccion', 'column', array(
-                'title' => 'Finishby Direccion',
-            ))
-            ->add('finishby.created', 'column', array(
-                'title' => 'Finishby Created',
-            ))
-            ->add('finishby.facebookId', 'column', array(
-                'title' => 'Finishby FacebookId',
-            ))
-            ->add('finishby.facebookAccessToken', 'column', array(
-                'title' => 'Finishby FacebookAccessToken',
-            ))
-            ->add('finishby.data', 'column', array(
-                'title' => 'Finishby Data',
             ))
             
            /* ->add(null, 'action', array(
