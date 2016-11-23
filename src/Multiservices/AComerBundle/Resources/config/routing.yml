@@ -1,0 +1,7 @@
+a_comer_restaurant:
+    resource: "@AComerBundle/Resources/config/routing/restaurant.yml"
+    prefix:   /restaurant
+
+multiservices_a_comer_homepage:
+    path:     /
+    defaults: { _controller: AComerBundle:Default:index }

@@ -1,0 +1,19 @@
+#para rutas front
+locations:
+    path:      /locations/{page}
+    defaults:  { _controller: AppBundle:Default:inicio, page: index }
+    requirements:
+        page: \d+|new
+    options:
+        expose: true
+#rutas del back o api         
+locations_api:
+    type: rest
+    resource: "@AComerBundle/Controller/LocationsController.php"
+    options:
+        expose: true
+    prefix: api 
+locations_results:
+    path:     /locations/results
+    defaults: { _controller: "AComerBundle:Locations:results" }
+    methods:  [GET, POST]

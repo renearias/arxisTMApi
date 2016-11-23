@@ -1,3 +1,11 @@
+a_comer_branch_office:
+    resource: "@AComerBundle/Controller/BranchOfficeController.php"
+    type:     annotation
+
+multiservices_a_comer:
+    resource: "@AComerBundle/Resources/config/routing.yml"
+    prefix:   /
+
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation

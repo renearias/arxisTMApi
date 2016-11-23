@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Restaurant</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ restaurant.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ restaurant.name }}</td>
+            </tr>
+            <tr>
+                <th>Data</th>
+                <td>{{ restaurant.data }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('restaurant') }}">Regresar a la lista</a>
+        </li>
+    </ul>
+{% endblock %}

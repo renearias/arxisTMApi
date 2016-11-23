@@ -1,0 +1,8 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>BranchOffice listado</h1>
+
+        {{ datatable_render_html(datatable) }}
+       {{ datatable_render_js(datatable) }}
+{% endblock %}

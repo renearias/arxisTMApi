@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>BranchOffice</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ branchOffice.id }}</td>
+            </tr>
+            <tr>
+                <th>Address</th>
+                <td>{{ branchOffice.address }}</td>
+            </tr>
+            <tr>
+                <th>Latitude</th>
+                <td>{{ branchOffice.latitude }}</td>
+            </tr>
+            <tr>
+                <th>Longitude</th>
+                <td>{{ branchOffice.longitude }}</td>
+            </tr>
+            <tr>
+                <th>Hourhand</th>
+                <td>{{ branchOffice.hourHand }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('branchoffice') }}">Regresar a la lista</a>
+        </li>
+    </ul>
+{% endblock %}
