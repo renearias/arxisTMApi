@@ -31,7 +31,7 @@ class BranchOffice {
     private $location;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Restaurant")
+     * @ORM\ManyToOne(targetEntity="Restaurant", cascade={"persist"})
      * @ORM\JoinColumn(name="restaurant", referencedColumnName="id")
      **/
     private $restaurant;
@@ -42,6 +42,13 @@ class BranchOffice {
      * @ORM\Column(name="address", type="text")
      */
     private $address;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="place_id", type="text", nullable=true)
+     */
+    private $placeId;
 
     /**
      * @var float
@@ -175,6 +182,22 @@ class BranchOffice {
     public function setRestaurant($restaurant)
     {
         $this->restaurant = $restaurant;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPlaceId()
+    {
+        return $this->placeId;
+    }
+
+    /**
+     * @param string $placeId
+     */
+    public function setPlaceId($placeId)
+    {
+        $this->placeId = $placeId;
     }
 
 

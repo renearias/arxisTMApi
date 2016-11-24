@@ -2,15 +2,16 @@
 
 namespace Multiservices\AComerBundle\Controller;
 
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
 use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Routing\ClassResourceInterface;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use AppBundle\Exception\InvalidFormException;
 use Multiservices\AComerBundle\Entity\Restaurant;
+use Multiservices\AComerBundle\Entity\BranchOffice;
 use Symfony\Component\HttpFoundation\Response;
+use AppBundle\Places\GooglePlacesClient;
 
 /**
  * Restaurant controller.
@@ -19,6 +20,14 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class RestaurantController extends FOSRestController implements ClassResourceInterface
 {
+
+    /**
+     * Constante para calcular grados por kilometro
+     * Equivale a la cantidad de grados en un kilometro
+     * @var float
+     */
+    private $GR_BY_KM=0.00909090909091;
+
     /**
      * Lists all Restaurant entities.
      *
@@ -104,8 +113,20 @@ class RestaurantController extends FOSRestController implements ClassResourceInt
     {
         $serializer = $this->get('serializer');
 
-        $constant_km= 0.00909090909091;
-        $km= $constant_km*$radio;
+        $reports = $serializer->serialize($this->getRestaurant($lat,$lng,$radio), 'json');
+
+        $response = new Response($reports);
+
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
+    }
+
+    private function getRestaurant($lat,$lng,$radio){
+        $response=array();
+
+        $radio_km= $radio/1000;
+        $km= $this->GR_BY_KM*$radio_km;
 
         $lat_min = $lat - $km;
         $lat_max = $lat + $km;
@@ -114,6 +135,7 @@ class RestaurantController extends FOSRestController implements ClassResourceInt
         $lng_max = $lng + $km;
 
         $em = $this->getDoctrine()->getManager();
+
         $query = $em->createQuery(
             'SELECT bo
                 FROM AComerBundle:BranchOffice bo
@@ -123,24 +145,58 @@ class RestaurantController extends FOSRestController implements ClassResourceInt
                 AND bo.longitude <= :lng_max
                 ORDER BY bo.id ASC'
         )->setParameter('lat_min', $lat_min)
-         ->setParameter('lat_max', $lat_max)
-         ->setParameter('lng_min', $lng_min)
-         ->setParameter('lng_max', $lng_max);
-        $branchOffice=array();
+            ->setParameter('lat_max', $lat_max)
+            ->setParameter('lng_min', $lng_min)
+            ->setParameter('lng_max', $lng_max);
+
+
         if(count($query->getResult())>0){
-            $branchOffice = array("restaurants"=>$query->getResult(),"count"=>count($query->getResult()));
+            $response["restaurants"] = $query->getResult();
+        }else{
+            $client = new GooglePlacesClient();
+            $client->setType("food");
+
+            $req = $client->doRequest($client->getUrl($lat,$lng,$radio));
+
+            $deserealize= json_decode($req->getContent(),true);
+            if(strtoupper($deserealize["status"])=="OK"){
+                $restaurantList=array();
+                foreach($deserealize["results"] as $result){
+                    $branchOffice = $this->getDoctrine()
+                        ->getRepository('AComerBundle:BranchOffice')
+                        ->findOneBy(array("placeId"=>$result["place_id"]));
+
+                    if (!$branchOffice) {
+                        $branchOffice= new BranchOffice();
+
+                        $branchOffice->setAddress($result["vicinity"]);
+
+                        $restaurant = $this->getDoctrine()
+                            ->getRepository('AComerBundle:Restaurant')
+                            ->findOneBy(array("name"=>$result["name"]));
+
+                        if (!$restaurant) {
+                            $restaurant = new Restaurant();
+                            $restaurant->setName($result["name"]);
+                        }
+
+                        $branchOffice->setRestaurant($restaurant);
+                        $branchOffice->setPlaceId($result["place_id"]);
+                        $branchOffice->setLatitude($result["geometry"]["location"]["lat"]);
+                        $branchOffice->setLongitude($result["geometry"]["location"]["lng"]);
+
+                        $em->persist($branchOffice);
+                        $em->flush();
+                    }
+
+                    array_push($restaurantList,$branchOffice);
+                }
+                $response["restaurants"]= $restaurantList;
+            }
         }
-
-
-        $reports = $serializer->serialize($branchOffice, 'json');
-
-        $response = new Response($reports);
-
-        $response->headers->set('Content-Type', 'application/json');
 
         return $response;
     }
-
 
     /**
      * Finds and displays a Restaurant entity.

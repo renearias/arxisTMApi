@@ -34,12 +34,12 @@ class DefaultController extends Controller
      * @Route("/hola", name="hola")
      */
     public function hola(){
-        
+
         $client = new GooglePlacesClient();
-        $response = $client->doRequest('GET', 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&types=food&name=harbour&key=AIzaSyDloqho8mEB0qfUEg2C-rkjjgrOFtfpwaU');
-        $apiPlacesUrl='https://maps.googleapis.com/maps/api/place/nearbysearch/json?';
-        $apiRequest='location=-33.8670522,151.1957362&radius=500&types=food&name=harbour&key=AIzaSyDloqho8mEB0qfUEg2C-rkjjgrOFtfpwaU';
-        //return $this->render('default/hola.html.twig', []);
-        return $response;
+        $client->setType("food");
+
+        $result = $client->doRequest($client->getUrl(-34.603861,-58.38612699999999,500));
+
+        return $result;
     }
 }
