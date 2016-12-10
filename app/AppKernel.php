@@ -17,6 +17,7 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new AppBundle\AppBundle(),
             new Arxis\ContableBundle\ArxisContableBundle(),
+            new Arxis\OAuthServerBundle\ArxisOAuthServerBundle(),
             new Multiservices\PayPayBundle\PayPayBundle(),
             new Multiservices\TaskBundle\TaskBundle(),
             new FOS\OAuthServerBundle\FOSOAuthServerBundle(),

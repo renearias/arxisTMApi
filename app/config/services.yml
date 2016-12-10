@@ -43,9 +43,12 @@ services:
       class: AppBundle\Twig\Extension\Base64Extension
       tags:
           - { name: twig.extension }      
+    Arxis\OAuthServerBundle\Controller\TokenController:
+        class: Arxis\OAuthServerBundle\Controller\TokenController
+        arguments: ["@fos_oauth_server.server"]
     #HANDLERS
     #appbundle.form.handler.usuario:
     #   class: AppBundle\Form\Handler\FormHandler
     #   arguments: ["@doctrine.orm.entity_manager","@form.factory","@appbundle.form.usuariotype"]
     #appbundle.form.usuariotype:
-    #    class: AppBundle\Form\UsuarioType        
+    #    class: AppBundle\Form\UsuarioType 
