@@ -12,7 +12,6 @@
 namespace Arxis\OAuthServerBundle\Controller;
 
 use FOS\OAuthServerBundle\Controller\TokenController as BaseController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use OAuth2\OAuth2;
 use OAuth2\OAuth2ServerException;
@@ -24,7 +23,6 @@ class TokenController extends BaseController
 {
     
     /**
-     * @Route("/oauth/v2/token", name="token")
      * 
      * @ApiDoc(
      *   resource = true,
