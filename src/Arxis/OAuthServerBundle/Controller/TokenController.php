@@ -23,7 +23,26 @@ class TokenController extends BaseController
 {
     
     /**
-     * 
+     *
+     * Get access token via OAuth.
+     *
+     * ### Error Response ###
+     *
+     *     {
+     *       "error": "invalid_request",
+     *       "error_description": "Invalid grant_type parameter or parameter missing"
+     *     }
+     *
+     *
+     * ### Succesful Example Response ###
+     *
+     *     {
+     *         "access_token": "MGE3MDY3MTc1OGI4NTQ1ZTJhOTViODBiNzkxNDBkYmZmMGQ3Y2JjYTYzOWU5MDk2YjAyMWY4ZjVkNjMwYzQyMQ",
+     *         "expires_in": 3600,
+     *         "token_type": "bearer",
+     *         "scope": null,
+     *         "refresh_token": "YTE3ZjU1ZjgyMTM2ZjFlMTU1MzgyYjA3MzhkYTJlOTVkYmRkZjk0OWMzMDY0ZWFjZjM2ZDc5YjQ5MzBjOGI1Mw"
+     *      }
      * @ApiDoc(
      *   resource = true,
      *   section="Login",
@@ -36,6 +55,7 @@ class TokenController extends BaseController
      *          "name"="client_id",
      *          "dataType"="string",
      *          "requirement"="string",
+     *          "default"="1_2fq6ri2xx4cgc8o8kgwwwgc0gk040cwwoww0k4gc0oksksgk0g",
      *          "description"="client id  defaultValue = '1_2fq6ri2xx4cgc8o8kgwwwgc0gk040cwwoww0k4gc0oksksgk0g'",
      *          "value"="1212"
      *      },
@@ -43,6 +63,7 @@ class TokenController extends BaseController
      *          "name"="client_secret",
      *          "dataType"="string",
      *          "requirement"="string",
+     *          "default"="5inlap0v5pgkg8co8o84gocwwk8wo84woskk08w08o08ooc804",
      *          "description"="client secret defaultValue= '5inlap0v5pgkg8co8o84gocwwk8wo84woskk08w08o08ooc804'"
      *      }
      *    },
@@ -52,7 +73,7 @@ class TokenController extends BaseController
      *   },
      *  statusCodes = {
      *     200 = "Returned when successful",
-     *     404 = "Returned when not found"
+     *     400 = "Returned when Bad Action"
      *   }
      * )
      * 
