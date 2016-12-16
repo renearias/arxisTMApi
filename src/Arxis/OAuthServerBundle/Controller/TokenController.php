@@ -56,8 +56,7 @@ class TokenController extends BaseController
      *          "dataType"="string",
      *          "requirement"="string",
      *          "default"="1_2fq6ri2xx4cgc8o8kgwwwgc0gk040cwwoww0k4gc0oksksgk0g",
-     *          "description"="client id  defaultValue = '1_2fq6ri2xx4cgc8o8kgwwwgc0gk040cwwoww0k4gc0oksksgk0g'",
-     *          "value"="1212"
+     *          "description"="client id  defaultValue = '1_2fq6ri2xx4cgc8o8kgwwwgc0gk040cwwoww0k4gc0oksksgk0g'"
      *      },
      *      {
      *          "name"="client_secret",
