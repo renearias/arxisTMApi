@@ -18,8 +18,4 @@ restaurant_results:
     path:     /restaurant/results
     defaults: { _controller: "AComerBundle:Restaurant:results" }
     methods:  [GET, POST]
-restaurant_search:
-    path:     /search/{lat}/{lng}/{radio}
-    defaults: { _controller: AComerBundle:Restaurant:search}
-    methods:  [GET]
 

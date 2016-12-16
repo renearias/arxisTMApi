@@ -7,6 +7,7 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\RestBundle\Request\ParamFetcher;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use Multiservices\AComerBundle\Entity\Restaurant;
 use Multiservices\AComerBundle\Entity\BranchOffice;
@@ -96,23 +97,24 @@ class RestaurantController extends FOSRestController implements ClassResourceInt
      * @ApiDoc(
      *   resource = true,
      *   section="Restaurant",
-     *   filters={
-     *      {"name"="search[value]", "dataType"="string", "default"="", "required":true},
-     *      {"name"="draw", "dataType"="integer"}
-     *   },
      *   statusCodes = {
      *     200 = "Returned when successful",
      *     404 = "Returned when not found"
      *   }
+     * 
      * )
-     *
+     * @Rest\RequestParam(name="lat", default="0", description="latitude")
+     * @Rest\RequestParam(name="lng", default="0", description="longitude")
+     * @Rest\RequestParam(name="radio", default="500", description="radio in meters")
      * @Rest\View()
      *
      */
-    public function searchAction($lat,$lng,$radio)
+    public function postSearchAction(ParamFetcher $paramFetcher)
     {
         $serializer = $this->get('serializer');
-
+        $lat = $paramFetcher->get('lat');
+        $lng = $paramFetcher->get('lng');
+        $radio = $paramFetcher->get('radio');
         $reports = $serializer->serialize($this->getRestaurant($lat,$lng,$radio), 'json');
 
         $response = new Response($reports);
@@ -121,7 +123,7 @@ class RestaurantController extends FOSRestController implements ClassResourceInt
 
         return $response;
     }
-
+    
     private function getRestaurant($lat,$lng,$radio){
         $response=array();
 
@@ -157,7 +159,7 @@ class RestaurantController extends FOSRestController implements ClassResourceInt
             $client->setType("food");
 
             $req = $client->doRequest($client->getUrl($lat,$lng,$radio));
-
+            
             $deserealize= json_decode($req->getContent(),true);
             if(strtoupper($deserealize["status"])=="OK"){
                 $restaurantList=array();
